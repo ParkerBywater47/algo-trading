@@ -1,1 +1,4 @@
 *.txt
+*.swp
+data/*.csv
+

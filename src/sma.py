@@ -10,9 +10,10 @@ def main():
     prices_csv = None
     verbose_output = False
     simulation = False
+    days_in_average = 5
    
     # try to open the file 
-    if len(sys.argv) == 1:
+    if len(sys.argv) < 2:
         print("Error: no data file given")
         usage()
         sys.exit(1)
@@ -58,34 +59,26 @@ def main():
     if has_header: 
         prices_csv.readline()        
     
-    sma(prices=prices_csv, days_in_average=5, simulation_mode=simulation, verbose_output=verbose_output, csv_col_idx = 4)
+    sma(prices_csv, days_in_average, simulation,verbose_output, csv_col_idx=4)
     prices_csv.close()
     
 
 def sma(prices, days_in_average, simulation_mode, verbose_output, csv_col_idx):
-    initial_price = 0
-
     # compute the moving average 
     prev_days = []
-    sum_for_avg = 0
     for i in range(days_in_average): 
         line = prices.readline()
         if i == 0: 
             initial_price = float(line.split(",")[csv_col_idx])
         if line != "": 
-            sum_for_avg += float(line.split(",")[csv_col_idx])
             prev_days.append( float(line.split(",")[csv_col_idx]))
         else: 
             print("Error: Not enough data for number of days in moving average")
             sys.exit(1)
 
-    moving_avg = sum_for_avg / days_in_average
-   
-    # buy the stock to start 
-    bank_acct = 500 
-    stock_acct = 0
+    moving_avg = average(prev_days) 
+    bank_acct = 1_000_000 
     bought = False
-    
     for line in prices: 
         today_price = float(line.split(",")[csv_col_idx]) 
         if verbose_output:
@@ -93,14 +86,12 @@ def sma(prices, days_in_average, simulation_mode, verbose_output, csv_col_idx):
 
         if bought == False and today_price > moving_avg: 
             bought = True   
-            stock_acct += today_price
             bank_acct -= today_price
             if verbose_output or line.startswith(time.strftime("%Y-%m-%d")):
                 print("bought at " + format(today_price, ".2f"))
 
         elif bought == True and today_price < moving_avg: 
             bought = False
-            stock_acct -= today_price
             bank_acct += today_price
             if verbose_output or line.startswith(time.strftime("%Y-%m-%d")):
                 print("sold at " + format(today_price, ".2f"))
@@ -108,19 +99,14 @@ def sma(prices, days_in_average, simulation_mode, verbose_output, csv_col_idx):
         # update moving average  
         prev_days.append(today_price)
         prev_days.pop(0)
-        
-        sum_for_avg = 0
-        for i in prev_days:
-            sum_for_avg += i
-        moving_avg = sum_for_avg / len(prev_days)
-
+        moving_avg = average(prev_days)
   
 
     # Report stuff if this was ran in simulation mode
     if simulation_mode: 
-        print("stock value = " + format(today_price, ".2f"))
+        if bought: 
+            bank_acct += today_price
         print("bank_acct = " + format(bank_acct, ".2f"))
-        print("total = " + format(today_price + bank_acct, ".2f"))
         print("if bought and held: " + format(today_price - initial_price, ".2f") + "\n")
 
  
@@ -133,19 +119,14 @@ OPTIONS:
 
     -h --has-header <t|true|f|false>
     \t\tSpecify whether or not data-file has a header with. 
-    \t\tProgram assumes true if option is not used.
-"""
-)
+    \t\tProgram assumes true if option is not used.""")
 
 
-
-
-
-
-
-
-
-
+def average(lst): 
+    the_sum = 0
+    for i in lst:
+        the_sum += i
+    return the_sum / len(lst)
 
 
 if __name__ == "__main__": 
