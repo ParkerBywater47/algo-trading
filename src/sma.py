@@ -19,11 +19,9 @@ def main():
         sys.exit(1)
     
     print("Data file: " + sys.argv[1])
-    i = 1  
-    while i < len(sys.argv): 
-        if i == 1: 
-            prices_csv = open(sys.argv[1])
-        else: 
+    with open(sys.argv[1]) as prices_csv:
+        i = 2  
+        while i < len(sys.argv): # have to do a while loop here because dumbass python 
             if sys.argv[i] == "-h":
                 if i != len(sys.argv) -1: 
                     if sys.argv[i + 1] == "f" or sys.argv[i + 1] == "false":
@@ -53,14 +51,13 @@ def main():
             else: 
                 print("Error: Invalid arg '" + sys.argv[i] + "'")
                 sys.exit(1)
-        i = i + 1
+            i = i + 1
     
-    # discard the header if it has one
-    if has_header: 
-        prices_csv.readline()        
-    
-    sma(prices_csv, days_in_average, simulation,verbose_output, csv_col_idx=4)
-    prices_csv.close()
+        # discard the header if it has one
+        if has_header: 
+            prices_csv.readline()        
+        
+        sma(prices_csv, days_in_average, simulation,verbose_output, csv_col_idx=4)
     
 
 def sma(prices, days_in_average, simulation_mode, verbose_output, csv_col_idx):
