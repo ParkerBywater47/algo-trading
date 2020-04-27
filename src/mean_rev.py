@@ -8,7 +8,10 @@ def main():
         <li> There is probably an average number of days that a stock trends down
         and a number of days that a stock trends up.
         <li> Theoretically, you could buy after a stock has trended down for its average number of days
-            and sell after it's trended up for its average number of days 
+            and sell after it's trended up for its average number of days.
+        </ol>
+    This is basically identical to dyamic_mean_rev.py, but differs in that it does not dynamically update 
+    the value for average days in down/up-trends.
     </p> 
     """
     # deal with a data file ...
