@@ -24,22 +24,25 @@ def main():
         f.readline()
         
         # the 4th column is closing price
-        col_idx = 4
+        col_idx = 2 
+#        col_idx = 0
         
         days_in_uptrend = 0
         days_in_downtrend = 0
-        average_days_in_uptrend = 1.7142857142857142
-        average_days_in_downtrend = 1.880952380952381
+        average_days_in_uptrend = 1.8958868894601542
+        average_days_in_downtrend = 1.787917737789203
 
         bought = False
         money = 10000
-        yesterday_price = float(f.readline().split(",")[4])
+        yesterday_price = float(f.readline().split(",")[col_idx])
         initial_price = yesterday_price
         print("init:", initial_price)
-        today_price =  float(f.readline().split(",")[4])
+        name = f.readline().split(",")
+        today_price =  float(name[col_idx])
+        today = name[0]
         in_downtrend = today_price < yesterday_price
         for line in f: 
-            print(format(today_price, ".3f"),  "\tup:", format(average_days_in_uptrend, ".3f"), "\tdown:", format(average_days_in_downtrend, ".3f"))
+            # print(format(today_price, ".3f"),  "\tup:", format(average_days_in_uptrend, ".3f"), "\tdown:", format(average_days_in_downtrend, ".3f"))
 
             # trend logic
             if today_price < yesterday_price and not in_downtrend:
@@ -55,24 +58,31 @@ def main():
             elif today_price > yesterday_price:
                 days_in_uptrend += 1 
         
+            if bought and today_price < stop_loss_price: 
+                bought = False
+                money += today_price
+                print("stop-loss @ " + str(today_price) +  " on " + today + "\ncontinue trading?")
+#                if name == "y":
+#                    continue
+#                else:
+#                    break
+
             # buy logic
             if days_in_downtrend >= average_days_in_downtrend and not bought: 
                 bought = True
-                money -= today_price
-                stop_loss_price = .75 * today_price
-                print("bought @", today_price)
+                money -= today_price * 1.002
+                stop_loss_price = .90 * today_price
+                print("bought @", today_price, "on " + today)
             elif bought and days_in_uptrend >= average_days_in_uptrend: 
                 bought = False
-                money += today_price
-                print("sold @", today_price)
-            elif bought and today_price < stop_loss_price: 
-                bought = False
-                money += today_price
-                print("stop-loss @", today_price)
+                money += today_price * .998
+                print("sold @", today_price, "on " + today)
+            
 
             # update prices
             yesterday_price = today_price
-            today_price = float(line.split(",")[4])
+            today_price = float(line.split(",")[col_idx])
+            today = line.split(",")[0] 
         
         # print simulation results 
         if bought: 

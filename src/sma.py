@@ -68,7 +68,7 @@ def sma(prices, days_in_average, simulation_mode, verbose_output, csv_col_idx):
         if i == 0: 
             initial_price = float(line.split(",")[csv_col_idx])
         if line != "": 
-            prev_days.append( float(line.split(",")[csv_col_idx]))
+            prev_days.append(float(line.split(",")[csv_col_idx]))
         else: 
             print("Error: Not enough data for number of days in moving average")
             sys.exit(1)
@@ -103,12 +103,12 @@ def sma(prices, days_in_average, simulation_mode, verbose_output, csv_col_idx):
     if simulation_mode: 
         if bought: 
             bank_acct += today_price
-        print("bank_acct = " + format(bank_acct, ".2f"))
-        print("if bought and held: " + format(today_price - initial_price, ".2f") + "\n")
+        print("net:" + format(bank_acct -1_000_000 , ".2f"))
+        print("b&h:" + format(today_price - initial_price, ".2f") + "\n")
 
  
 def usage(): 
-    print("""USAGE: python macd.py data-file [options]
+    print("""USAGE: python sma.py data-file [options]
 OPTIONS: 
     -d, --days-in-average <num> 
     \t\tSpecify how many days should be used to compute the moving average. 
