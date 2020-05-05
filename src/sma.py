@@ -61,7 +61,7 @@ def main():
     
 
 def sma(prices, days_in_average, simulation_mode, verbose_output, csv_col_idx):
-    # compute the moving average 
+    # compute the moving average to start
     prev_days = []
     for i in range(days_in_average): 
         line = prices.readline()

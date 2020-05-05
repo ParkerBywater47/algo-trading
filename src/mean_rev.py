@@ -62,10 +62,6 @@ def main():
                 bought = False
                 money += today_price
                 print("stop-loss @ " + str(today_price) +  " on " + today + "\ncontinue trading?")
-#                if name == "y":
-#                    continue
-#                else:
-#                    break
 
             # buy logic
             if days_in_downtrend >= average_days_in_downtrend and not bought: 
@@ -78,7 +74,6 @@ def main():
                 money += today_price * .998
                 print("sold @", today_price, "on " + today)
             
-
             # update prices
             yesterday_price = today_price
             today_price = float(line.split(",")[col_idx])
