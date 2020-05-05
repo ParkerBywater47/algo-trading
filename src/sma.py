@@ -76,20 +76,26 @@ def sma(prices, days_in_average, simulation_mode, verbose_output, csv_col_idx):
     moving_avg = average(prev_days) 
     bank_acct = 1_000_000 
     bought = False
+    trades_made = 0
+    volume = 0
     for line in prices: 
         today_price = float(line.split(",")[csv_col_idx]) 
         if verbose_output:
             print("today: " + format(today_price, "<10.2f")  + "avg: "  + format(moving_avg, ".2f"))
 
-        if bought == False and today_price > moving_avg: 
+        if bought == False and today_price > moving_avg * (1 + threshold) : 
+            trades_made += 1
             bought = True   
             bank_acct -= today_price * (1 + fee_rate) 
+            volume += today_price
             if verbose_output or line.startswith(time.strftime("%Y-%m-%d")):
                 print("bought at " + format(today_price, ".2f"))
 
-        elif bought == True and today_price < moving_avg: 
+        elif bought == True and today_price < moving_avg * (1 - threshold) : 
+            trades_made += 1
             bought = False
             bank_acct += today_price * (1 - fee_rate) 
+            volume += today_price
             if verbose_output or line.startswith(time.strftime("%Y-%m-%d")):
                 print("sold at " + format(today_price, ".2f"))
 
@@ -102,9 +108,12 @@ def sma(prices, days_in_average, simulation_mode, verbose_output, csv_col_idx):
     # Report stuff if this was ran in simulation mode
     if simulation_mode: 
         if bought: 
-            bank_acct += today_price * (1 - fee_rate) 
+            bank_acct += today_price #* (1 - fee_rate) 
+        #print(str(days_in_average) + "," + format((bank_acct -1_000_000) / (today_price - initial_price), "3.2f"))
         print("net:" + format(bank_acct -1_000_000 , ".2f"))
-        print("b&h:" + format(today_price - initial_price, ".2f") + "\n")
+        print("b&h:" + format(today_price - initial_price, ".2f"))
+        print("trades:", trades_made)
+        print("volume:", volume )
 
  
 def usage(): 
