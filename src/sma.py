@@ -56,7 +56,7 @@ def main():
         if has_header: 
             prices_csv.readline()        
         
-        sma(prices_csv, days_in_average, simulation,verbose_output, csv_col_idx=4)
+        sma(prices_csv, days_in_average, simulation,verbose_output, csv_col_idx=2)
     
 
 def sma(prices, days_in_average, simulation_mode, verbose_output, csv_col_idx):
@@ -72,7 +72,7 @@ def sma(prices, days_in_average, simulation_mode, verbose_output, csv_col_idx):
             print("Error: Not enough data for number of days in moving average")
             sys.exit(1)
 
-    fee_rate = 0 
+    fee_rate = 0.015 
     moving_avg = average(prev_days) 
     bank_acct = 1_000_000 
     bought = False

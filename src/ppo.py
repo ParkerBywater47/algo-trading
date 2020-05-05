@@ -17,7 +17,7 @@ def main():
             # discard header
             f.readline()
 
-            fee_rate = 0 
+            fee_rate = 0.015 
     #        col_idx = 0
             
             days_in_uptrend = 0
@@ -30,7 +30,6 @@ def main():
             name = f.readline().split(",")
             yesterday_price = float(name[col_idx])
             initial_price = yesterday_price
-            print("init:", initial_price)
             money -= yesterday_price
             today = name[0]
             trades = 1 
@@ -64,7 +63,7 @@ def main():
             # print simulation results 
             if bought: 
                 money += today_price 
-            print("\n---result for " + format(100 * fluctuation_percentage, ".2") + "%---") 
+            print("\nfluctuation percentage: " + format(100 * fluctuation_percentage, "3.2f") + "%") 
             print("net:", money - 10000) 
             print("b&h:", (today_price - initial_price))
 

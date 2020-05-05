@@ -1,655 +1,655 @@
-# sma.py with no fees 
-    8
-    net:-1747.61
-    b&h:1773.00
+# sma.py with no fees
 
-    9
-    net:-2244.19
-    b&h:1773.00
+    moving average length: 8
+    net:4617.33
+    b&h:1746.83
 
-    10
-    net:-551.00
-    b&h:1773.00
+    moving average length: 9
+    net:2894.30
+    b&h:1746.83
 
-    11
-    net:-1067.76
-    b&h:1773.00
+    moving average length: 10
+    net:5783.47
+    b&h:1746.83
 
-    12
-    net:-1730.91
-    b&h:1773.00
+    moving average length: 11
+    net:3170.94
+    b&h:1746.83
 
-    13
-    net:-117.52
-    b&h:1773.00
+    moving average length: 12
+    net:2412.69
+    b&h:1746.83
 
-    14
-    net:1526.86
-    b&h:1773.00
+    moving average length: 13
+    net:2884.79
+    b&h:1746.83
 
-    15
-    net:1678.06
-    b&h:1773.00
+    moving average length: 14
+    net:3614.66
+    b&h:1746.83
 
-    16
-    net:2074.70
-    b&h:1773.00
+    moving average length: 15
+    net:5647.70
+    b&h:1746.83
 
-    17
-    net:2042.72
-    b&h:1773.00
+    moving average length: 16
+    net:3372.57
+    b&h:1746.83
 
-    18
-    net:1745.63
-    b&h:1773.00
+    moving average length: 17
+    net:5155.26
+    b&h:1746.83
 
-    19
-    net:2090.96
-    b&h:1773.00
+    moving average length: 18
+    net:6975.18
+    b&h:1746.83
 
-    20
-    net:2838.74
-    b&h:1773.00
+    moving average length: 19
+    net:8270.93
+    b&h:1746.83
 
-    21
-    net:3441.69
-    b&h:1773.00
+    moving average length: 20
+    net:6891.17
+    b&h:1746.83
 
-    22
-    net:3948.87
-    b&h:1773.00
+    moving average length: 21
+    net:7172.97
+    b&h:1746.83
 
-    23
-    net:4179.06
-    b&h:1773.00
+    moving average length: 22
+    net:6749.36
+    b&h:1746.83
 
-    24
-    net:4436.65
-    b&h:1773.00
+    moving average length: 23
+    net:7474.28
+    b&h:1746.83
 
-    25
-    net:4664.98
-    b&h:1773.00
+    moving average length: 24
+    net:6858.06
+    b&h:1746.83
 
-    26
-    net:4001.19
-    b&h:1773.00
+    moving average length: 25
+    net:6610.07
+    b&h:1746.83
 
-    27
-    net:4615.60
-    b&h:1773.00
+    moving average length: 26
+    net:6108.07
+    b&h:1746.83
 
-    28
-    net:3966.74
-    b&h:1773.00
+    moving average length: 27
+    net:4655.52
+    b&h:1746.83
 
-    29
-    net:3803.60
-    b&h:1773.00
+    moving average length: 28
+    net:3933.50
+    b&h:1746.83
 
-    30
-    net:2894.72
-    b&h:1773.00
+    moving average length: 29
+    net:4689.74
+    b&h:1746.83
 
-    31
-    net:3511.27
-    b&h:1773.00
+    moving average length: 30
+    net:4984.99
+    b&h:1746.83
 
-    32
-    net:4207.34
-    b&h:1773.00
+    moving average length: 31
+    net:5551.62
+    b&h:1746.83
 
-    33
-    net:2787.02
-    b&h:1773.00
+    moving average length: 32
+    net:5026.88
+    b&h:1746.83
 
-    34
-    net:587.93
-    b&h:1773.00
+    moving average length: 33
+    net:3204.34
+    b&h:1746.83
 
-    35
-    net:158.23
-    b&h:1773.00
+    moving average length: 34
+    net:2847.93
+    b&h:1746.83
 
-    36
-    net:-46.23
-    b&h:1773.00
+    moving average length: 35
+    net:2440.07
+    b&h:1746.83
 
-    37
-    net:-558.02
-    b&h:1773.00
+    moving average length: 36
+    net:1361.24
+    b&h:1746.83
 
-    38
-    net:-456.90
-    b&h:1773.00
+    moving average length: 37
+    net:2504.85
+    b&h:1746.83
 
-    39
-    net:-38.58
-    b&h:1773.00
+    moving average length: 38
+    net:1871.70
+    b&h:1746.83
 
-    40
-    net:-970.70
-    b&h:1773.00
+    moving average length: 39
+    net:1837.33
+    b&h:1746.83
 
-    41
-    net:-1653.88
-    b&h:1773.00
+    moving average length: 40
+    net:2088.22
+    b&h:1746.83
 
-    42
-    net:-1123.03
-    b&h:1773.00
+    moving average length: 41
+    net:2592.93
+    b&h:1746.83
 
-    43
-    net:-1612.39
-    b&h:1773.00
+    moving average length: 42
+    net:2947.74
+    b&h:1746.83
 
-    44
-    net:-1547.85
-    b&h:1773.00
+    moving average length: 43
+    net:1738.42
+    b&h:1746.83
 
-    45
-    net:-1106.65
-    b&h:1773.00
+    moving average length: 44
+    net:1970.60
+    b&h:1746.83
 
-    46
-    net:-1291.14
-    b&h:1773.00
+    moving average length: 45
+    net:2689.72
+    b&h:1746.83
 
-    47
-    net:-602.14
-    b&h:1773.00
+    moving average length: 46
+    net:2419.85
+    b&h:1746.83
 
-    48
-    net:613.57
-    b&h:1773.00
+    moving average length: 47
+    net:2149.05
+    b&h:1746.83
+
+    moving average length: 48
+    net:2359.17
+    b&h:1746.83
 
 # ppo.py with no fees
 
-    ---result for 1.0%---
-    net: 2785.5300000000007
-    b&h: 964.3000000000002
-
-    ---result for 1.5%---
-    net: 2748.0200000000004
-    b&h: 964.3000000000002
-
-    ---result for 2.0%---
-    net: 1625.930000000004
-    b&h: 964.3000000000002
-
-    ---result for 2.5%---
-    net: 917.5499999999975
-    b&h: 964.3000000000002
-
-    ---result for 3.0%---
-    net: 1495.7800000000025
-    b&h: 964.3000000000002
-
-    ---result for 3.5%---
-    net: 1050.1200000000026
-    b&h: 964.3000000000002
-
-    ---result for 4.0%---
-    net: 1105.0300000000025
-    b&h: 964.3000000000002
-
-    ---result for 4.5%---
-    net: 829.260000000002
-    b&h: 964.3000000000002
-
-    ---result for 5.0%---
-    net: 1357.0800000000017
-    b&h: 964.3000000000002
-
-    ---result for 5.5%---
-    net: 1182.1599999999999
-    b&h: 964.3000000000002
-
-    ---result for 6.0%---
-    net: 1182.1599999999999
-    b&h: 964.3000000000002
-
-    ---result for 6.5%---
-    net: 1182.1599999999999
-    b&h: 964.3000000000002
-
-    ---result for 7.0%---
-    net: 1182.1599999999999
-    b&h: 964.3000000000002
-
-    ---result for 7.5%---
-    net: 1182.1599999999999
-    b&h: 964.3000000000002
-
-    ---result for 8.0%---
-    net: 1051.3600000000006
-    b&h: 964.3000000000002
-
-    ---result for 8.5%---
-    net: 1051.3600000000006
-    b&h: 964.3000000000002
+    fluctuation percentage: 1.00%
+    net: 1431.3600000000024
+    b&h: 1746.8300000000008
+
+    fluctuation percentage: 1.50%
+    net: 2736.3399999999965
+    b&h: 1746.8300000000008
+
+    fluctuation percentage: 2.00%
+    net: 2376.610000000026
+    b&h: 1746.8300000000008
+
+    fluctuation percentage: 2.50%
+    net: 613.8000000000084
+    b&h: 1746.8300000000008
+
+    fluctuation percentage: 3.00%
+    net: 367.30000000000655
+    b&h: 1746.8300000000008
+
+    fluctuation percentage: 3.50%
+    net: 432.17000000000553
+    b&h: 1746.8300000000008
+
+    fluctuation percentage: 4.00%
+    net: -59.06999999999607
+    b&h: 1746.8300000000008
+
+    fluctuation percentage: 4.50%
+    net: 145.1800000000003
+    b&h: 1746.8300000000008
+
+    fluctuation percentage: 5.00%
+    net: 713.8499999999985
+    b&h: 1746.8300000000008
+
+    fluctuation percentage: 5.50%
+    net: 479.02999999999884
+    b&h: 1746.8300000000008
+
+    fluctuation percentage: 6.00%
+    net: 693.4199999999983
+    b&h: 1746.8300000000008
+
+    fluctuation percentage: 6.50%
+    net: 732.7599999999984
+    b&h: 1746.8300000000008
+
+    fluctuation percentage: 7.00%
+    net: 732.7599999999984
+    b&h: 1746.8300000000008
+
+    fluctuation percentage: 7.50%
+    net: 745.7599999999984
+    b&h: 1746.8300000000008
+
+    fluctuation percentage: 8.00%
+    net: 614.9599999999991
+    b&h: 1746.8300000000008
+
+    fluctuation percentage: 8.50%
+    net: 967.1700000000019
+    b&h: 1746.8300000000008
 
-    ---result for 9.0%---
-    net: 1051.3600000000006
-    b&h: 964.3000000000002
+    fluctuation percentage: 9.00%
+    net: 1048.5400000000009
+    b&h: 1746.8300000000008
 
-    ---result for 9.5%---
-    net: 1051.3600000000006
-    b&h: 964.3000000000002
+    fluctuation percentage: 9.50%
+    net: 1048.5400000000009
+    b&h: 1746.8300000000008
 
-    ---result for 1e+01%---
-    net: -235.54999999999927
-    b&h: 964.3000000000002
+    fluctuation percentage: 10.00%
+    net: -238.36999999999898
+    b&h: 1746.8300000000008
 
-    ---result for 1.1e+01%---
-    net: -235.54999999999927
-    b&h: 964.3000000000002
+    fluctuation percentage: 10.50%
+    net: -238.36999999999898
+    b&h: 1746.8300000000008
 
-    ---result for 1.1e+01%---
-    net: -235.54999999999927
-    b&h: 964.3000000000002
+    fluctuation percentage: 11.00%
+    net: -238.36999999999898
+    b&h: 1746.8300000000008
 
-    ---result for 1.2e+01%---
-    net: -235.54999999999927
-    b&h: 964.3000000000002
+    fluctuation percentage: 11.50%
+    net: -238.36999999999898
+    b&h: 1746.8300000000008
 
-    ---result for 1.2e+01%---
-    net: -235.54999999999927
-    b&h: 964.3000000000002
+    fluctuation percentage: 12.00%
+    net: -238.36999999999898
+    b&h: 1746.8300000000008
 
-    ---result for 1.3e+01%---
-    net: -235.54999999999927
-    b&h: 964.3000000000002
+    fluctuation percentage: 12.50%
+    net: -238.36999999999898
+    b&h: 1746.8300000000008
 
-    ---result for 1.3e+01%---
-    net: -235.54999999999927
-    b&h: 964.3000000000002
+    fluctuation percentage: 13.00%
+    net: -238.36999999999898
+    b&h: 1746.8300000000008
 
-    ---result for 1.4e+01%---
-    net: -235.54999999999927
-    b&h: 964.3000000000002
+    fluctuation percentage: 13.50%
+    net: -238.36999999999898
+    b&h: 1746.8300000000008
 
-    ---result for 1.4e+01%---
-    net: -235.54999999999927
-    b&h: 964.3000000000002
+    fluctuation percentage: 14.00%
+    net: -238.36999999999898
+    b&h: 1746.8300000000008
 
-    ---result for 1.5e+01%---
-    net: -235.54999999999927
-    b&h: 964.3000000000002
+    fluctuation percentage: 14.50%
+    net: -238.36999999999898
+    b&h: 1746.8300000000008
 
-    ---result for 1.5e+01%---
-    net: -235.54999999999927
-    b&h: 964.3000000000002
+    fluctuation percentage: 15.00%
+    net: -238.36999999999898
+    b&h: 1746.8300000000008
 
-    ---result for 1.6e+01%---
-    net: -235.54999999999927
-    b&h: 964.3000000000002
+    fluctuation percentage: 15.50%
+    net: -238.36999999999898
+    b&h: 1746.8300000000008
 
-    ---result for 1.6e+01%---
-    net: -235.54999999999927
-    b&h: 964.3000000000002
+    fluctuation percentage: 16.00%
+    net: -238.36999999999898
+    b&h: 1746.8300000000008
 
-    ---result for 1.7e+01%---
-    net: -39.2599999999984
-    b&h: 964.3000000000002
+    fluctuation percentage: 16.50%
+    net: -42.07999999999811
+    b&h: 1746.8300000000008
 
-    ---result for 1.7e+01%---
-    net: -15.369999999998981
-    b&h: 964.3000000000002
+    fluctuation percentage: 17.00%
+    net: -18.18999999999869
+    b&h: 1746.8300000000008
 
-    ---result for 1.8e+01%---
-    net: -15.369999999998981
-    b&h: 964.3000000000002
+    fluctuation percentage: 17.50%
+    net: -18.18999999999869
+    b&h: 1746.8300000000008
 
-    ---result for 1.8e+01%---
-    net: -15.369999999998981
-    b&h: 964.3000000000002
+    fluctuation percentage: 18.00%
+    net: -18.18999999999869
+    b&h: 1746.8300000000008
 
-    ---result for 1.9e+01%---
-    net: -15.369999999998981
-    b&h: 964.3000000000002
+    fluctuation percentage: 18.50%
+    net: -18.18999999999869
+    b&h: 1746.8300000000008
 
-    ---result for 1.9e+01%---
-    net: -15.369999999998981
-    b&h: 964.3000000000002
+    fluctuation percentage: 19.00%
+    net: -18.18999999999869
+    b&h: 1746.8300000000008
 
-    ---result for 2e+01%---
-    net: -15.369999999998981
-    b&h: 964.3000000000002
+    fluctuation percentage: 19.50%
+    net: -18.18999999999869
+    b&h: 1746.8300000000008
 
-    ---result for 2e+01%---
-    net: -15.369999999998981
-    b&h: 964.3000000000002
+    fluctuation percentage: 20.00%
+    net: -18.18999999999869
+    b&h: 1746.8300000000008
 
-    ---result for 2.1e+01%---
-    net: -15.369999999998981
-    b&h: 964.3000000000002
+    fluctuation percentage: 20.50%
+    net: -18.18999999999869
+    b&h: 1746.8300000000008
 
-# sma.py with 1.5% fees 
-
-    8
-    net:-328888.52
-    b&h:1773.00
-
-    9
-    net:-311480.89
-    b&h:1773.00
-
-    10
-    net:-289083.37
-    b&h:1773.00
-
-    11
-    net:-277267.58
-    b&h:1773.00
-
-    12
-    net:-271919.27
-    b&h:1773.00
-
-    13
-    net:-257254.93
-    b&h:1773.00
-
-    14
-    net:-242908.77
-    b&h:1773.00
-
-    15
-    net:-235698.50
-    b&h:1773.00
-
-    16
-    net:-222061.33
-    b&h:1773.00
-
-    17
-    net:-214417.64
-    b&h:1773.00
-
-    18
-    net:-203604.59
-    b&h:1773.00
-
-    19
-    net:-196836.96
-    b&h:1773.00
-
-    20
-    net:-189700.84
-    b&h:1773.00
-
-    21
-    net:-183514.64
-    b&h:1773.00
-
-    22
-    net:-178276.55
-    b&h:1773.00
-
-    23
-    net:-172656.52
-    b&h:1773.00
-
-    24
-    net:-167577.81
-    b&h:1773.00
+# sma.py with 1.5% fee
+
+    moving average length: 8
+    net:-341152.88
+    b&h:1746.83
+
+    moving average length: 9
+    net:-330288.98
+    b&h:1746.83
+
+    moving average length: 10
+    net:-306375.57
+    b&h:1746.83
+
+    moving average length: 11
+    net:-298939.46
+    b&h:1746.83
+
+    moving average length: 12
+    net:-284418.47
+    b&h:1746.83
+
+    moving average length: 13
+    net:-272292.28
+    b&h:1746.83
+
+    moving average length: 14
+    net:-255749.23
+    b&h:1746.83
+
+    moving average length: 15
+    net:-245867.63
+    b&h:1746.83
+
+    moving average length: 16
+    net:-240343.31
+    b&h:1746.83
+
+    moving average length: 17
+    net:-228307.64
+    b&h:1746.83
+
+    moving average length: 18
+    net:-211690.27
+    b&h:1746.83
+
+    moving average length: 19
+    net:-200936.20
+    b&h:1746.83
+
+    moving average length: 20
+    net:-197072.51
+    b&h:1746.83
+
+    moving average length: 21
+    net:-187690.23
+    b&h:1746.83
+
+    moving average length: 22
+    net:-183434.21
+    b&h:1746.83
+
+    moving average length: 23
+    net:-177208.83
+    b&h:1746.83
+
+    moving average length: 24
+    net:-171764.26
+    b&h:1746.83
 
-    25
-    net:-163327.91
-    b&h:1773.00
+    moving average length: 25
+    net:-168612.53
+    b&h:1746.83
 
-    26
-    net:-161845.39
-    b&h:1773.00
+    moving average length: 26
+    net:-168006.32
+    b&h:1746.83
 
-    27
-    net:-157926.49
-    b&h:1773.00
+    moving average length: 27
+    net:-167609.28
+    b&h:1746.83
 
-    28
-    net:-155471.44
-    b&h:1773.00
+    moving average length: 28
+    net:-166298.92
+    b&h:1746.83
 
-    29
-    net:-150411.91
-    b&h:1773.00
+    moving average length: 29
+    net:-161298.01
+    b&h:1746.83
 
-    30
-    net:-149496.95
-    b&h:1773.00
+    moving average length: 30
+    net:-157556.52
+    b&h:1746.83
 
-    31
-    net:-147240.73
-    b&h:1773.00
+    moving average length: 31
+    net:-154643.52
+    b&h:1746.83
 
-    32
-    net:-144662.70
-    b&h:1773.00
+    moving average length: 32
+    net:-153290.82
+    b&h:1746.83
 
-    33
-    net:-143546.48
-    b&h:1773.00
+    moving average length: 33
+    net:-154756.43
+    b&h:1746.83
 
-    34
-    net:-146669.39
-    b&h:1773.00
+    moving average length: 34
+    net:-149500.23
+    b&h:1746.83
 
-    35
-    net:-145367.88
-    b&h:1773.00
+    moving average length: 35
+    net:-148852.70
+    b&h:1746.83
 
-    36
-    net:-143232.13
-    b&h:1773.00
+    moving average length: 36
+    net:-145991.57
+    b&h:1746.83
 
-    37
-    net:-144945.06
-    b&h:1773.00
+    moving average length: 37
+    net:-140171.42
+    b&h:1746.83
 
-    38
-    net:-139586.63
-    b&h:1773.00
+    moving average length: 38
+    net:-138759.38
+    b&h:1746.83
 
-    39
-    net:-134665.22
-    b&h:1773.00
+    moving average length: 39
+    net:-138499.69
+    b&h:1746.83
 
-    40
-    net:-133179.20
-    b&h:1773.00
+    moving average length: 40
+    net:-134973.35
+    b&h:1746.83
 
-    41
-    net:-134979.91
-    b&h:1773.00
+    moving average length: 41
+    net:-132406.69
+    b&h:1746.83
 
-    42
-    net:-133407.95
-    b&h:1773.00
+    moving average length: 42
+    net:-131410.74
+    b&h:1746.83
 
-    43
-    net:-131204.46
-    b&h:1773.00
+    moving average length: 43
+    net:-132769.35
+    b&h:1746.83
 
-    44
-    net:-128008.43
-    b&h:1773.00
+    moving average length: 44
+    net:-131428.58
+    b&h:1746.83
 
-    45
-    net:-125130.38
-    b&h:1773.00
+    moving average length: 45
+    net:-128725.47
+    b&h:1746.83
 
-    46
-    net:-124777.38
-    b&h:1773.00
+    moving average length: 46
+    net:-127824.57
+    b&h:1746.83
 
-    47
-    net:-122917.56
-    b&h:1773.00
+    moving average length: 47
+    net:-127583.80
+    b&h:1746.83
 
-    48
-    net:-120742.34
-    b&h:1773.00
+    moving average length: 48
+    net:-122682.13
+    b&h:1746.83
 
-# ppo.py with 1.5% fees
+# ppo.py with 1.5% fee
 
-    ---result for 1.0%---
-    net: -27066.757949999937
-    b&h: 964.3000000000002
+    fluctuation percentage: 1.00%
+    net: -136431.99554999958
+    b&h: 1746.8300000000008
 
-    ---result for 1.5%---
-    net: -11918.076999999954
-    b&h: 964.3000000000002
+    fluctuation percentage: 1.50%
+    net: -75150.17644999981
+    b&h: 1746.8300000000008
 
-    ---result for 2.0%---
-    net: -8643.760749999972
-    b&h: 964.3000000000002
+    fluctuation percentage: 2.00%
+    net: -46630.60519999986
+    b&h: 1746.8300000000008
 
-    ---result for 2.5%---
-    net: -5828.660849999983
-    b&h: 964.3000000000002
+    fluctuation percentage: 2.50%
+    net: -29932.183649999904
+    b&h: 1746.8300000000008
 
-    ---result for 3.0%---
-    net: -2605.2577999999858
-    b&h: 964.3000000000002
+    fluctuation percentage: 3.00%
+    net: -20751.987349999927
+    b&h: 1746.8300000000008
 
-    ---result for 3.5%---
-    net: -2105.5502999999926
-    b&h: 964.3000000000002
+    fluctuation percentage: 3.50%
+    net: -13083.152499999953
+    b&h: 1746.8300000000008
 
-    ---result for 4.0%---
-    net: -1374.5796499999942
-    b&h: 964.3000000000002
+    fluctuation percentage: 4.00%
+    net: -9877.841399999958
+    b&h: 1746.8300000000008
 
-    ---result for 4.5%---
-    net: -642.7166999999972
-    b&h: 964.3000000000002
+    fluctuation percentage: 4.50%
+    net: -4409.973349999983
+    b&h: 1746.8300000000008
 
-    ---result for 5.0%---
-    net: -125.06339999999909
-    b&h: 964.3000000000002
+    fluctuation percentage: 5.00%
+    net: -3406.839299999986
+    b&h: 1746.8300000000008
 
-    ---result for 5.5%---
-    net: 162.61479999999938
-    b&h: 964.3000000000002
+    fluctuation percentage: 5.50%
+    net: -2180.329599999991
+    b&h: 1746.8300000000008
 
-    ---result for 6.0%---
-    net: 162.61479999999938
-    b&h: 964.3000000000002
+    fluctuation percentage: 6.00%
+    net: -1672.1554499999947
+    b&h: 1746.8300000000008
 
-    ---result for 6.5%---
-    net: 162.61479999999938
-    b&h: 964.3000000000002
+    fluctuation percentage: 6.50%
+    net: -1136.575549999994
+    b&h: 1746.8300000000008
 
-    ---result for 7.0%---
-    net: 162.61479999999938
-    b&h: 964.3000000000002
+    fluctuation percentage: 7.00%
+    net: -1136.575549999994
+    b&h: 1746.8300000000008
 
-    ---result for 7.5%---
-    net: 162.61479999999938
-    b&h: 964.3000000000002
+    fluctuation percentage: 7.50%
+    net: -1009.9205499999953
+    b&h: 1746.8300000000008
 
-    ---result for 8.0%---
-    net: 167.03230000000076
-    b&h: 964.3000000000002
+    fluctuation percentage: 8.00%
+    net: -1005.5030499999957
+    b&h: 1746.8300000000008
 
-    ---result for 8.5%---
-    net: 167.03230000000076
-    b&h: 964.3000000000002
+    fluctuation percentage: 8.50%
+    net: -162.77159999999822
+    b&h: 1746.8300000000008
 
-    ---result for 9.0%---
-    net: 167.03230000000076
-    b&h: 964.3000000000002
+    fluctuation percentage: 9.00%
+    net: 175.99255000000085
+    b&h: 1746.8300000000008
 
-    ---result for 9.5%---
-    net: 167.03230000000076
-    b&h: 964.3000000000002
+    fluctuation percentage: 9.50%
+    net: 175.99255000000085
+    b&h: 1746.8300000000008
 
-    ---result for 1e+01%---
-    net: -668.3322499999995
-    b&h: 964.3000000000002
+    fluctuation percentage: 10.00%
+    net: -659.3719999999994
+    b&h: 1746.8300000000008
 
-    ---result for 1.1e+01%---
-    net: -668.3322499999995
-    b&h: 964.3000000000002
+    fluctuation percentage: 10.50%
+    net: -659.3719999999994
+    b&h: 1746.8300000000008
 
-    ---result for 1.1e+01%---
-    net: -668.3322499999995
-    b&h: 964.3000000000002
+    fluctuation percentage: 11.00%
+    net: -659.3719999999994
+    b&h: 1746.8300000000008
 
-    ---result for 1.2e+01%---
-    net: -668.3322499999995
-    b&h: 964.3000000000002
+    fluctuation percentage: 11.50%
+    net: -659.3719999999994
+    b&h: 1746.8300000000008
 
-    ---result for 1.2e+01%---
-    net: -668.3322499999995
-    b&h: 964.3000000000002
+    fluctuation percentage: 12.00%
+    net: -659.3719999999994
+    b&h: 1746.8300000000008
 
-    ---result for 1.3e+01%---
-    net: -668.3322499999995
-    b&h: 964.3000000000002
+    fluctuation percentage: 12.50%
+    net: -659.3719999999994
+    b&h: 1746.8300000000008
 
-    ---result for 1.3e+01%---
-    net: -668.3322499999995
-    b&h: 964.3000000000002
+    fluctuation percentage: 13.00%
+    net: -659.3719999999994
+    b&h: 1746.8300000000008
 
-    ---result for 1.4e+01%---
-    net: -668.3322499999995
-    b&h: 964.3000000000002
+    fluctuation percentage: 13.50%
+    net: -659.3719999999994
+    b&h: 1746.8300000000008
 
-    ---result for 1.4e+01%---
-    net: -668.3322499999995
-    b&h: 964.3000000000002
+    fluctuation percentage: 14.00%
+    net: -659.3719999999994
+    b&h: 1746.8300000000008
 
-    ---result for 1.5e+01%---
-    net: -668.3322499999995
-    b&h: 964.3000000000002
+    fluctuation percentage: 14.50%
+    net: -659.3719999999994
+    b&h: 1746.8300000000008
 
-    ---result for 1.5e+01%---
-    net: -668.3322499999995
-    b&h: 964.3000000000002
+    fluctuation percentage: 15.00%
+    net: -659.3719999999994
+    b&h: 1746.8300000000008
 
-    ---result for 1.6e+01%---
-    net: -668.3322499999995
-    b&h: 964.3000000000002
+    fluctuation percentage: 15.50%
+    net: -659.3719999999994
+    b&h: 1746.8300000000008
 
-    ---result for 1.6e+01%---
-    net: -668.3322499999995
-    b&h: 964.3000000000002
+    fluctuation percentage: 16.00%
+    net: -659.3719999999994
+    b&h: 1746.8300000000008
 
-    ---result for 1.7e+01%---
-    net: -329.27360000000044
-    b&h: 964.3000000000002
+    fluctuation percentage: 16.50%
+    net: -320.31335000000036
+    b&h: 1746.8300000000008
 
-    ---result for 1.7e+01%---
-    net: -122.62525000000096
-    b&h: 964.3000000000002
+    fluctuation percentage: 17.00%
+    net: -113.66500000000087
+    b&h: 1746.8300000000008
 
-    ---result for 1.8e+01%---
-    net: -122.62525000000096
-    b&h: 964.3000000000002
+    fluctuation percentage: 17.50%
+    net: -113.66500000000087
+    b&h: 1746.8300000000008
 
-    ---result for 1.8e+01%---
-    net: -122.62525000000096
-    b&h: 964.3000000000002
+    fluctuation percentage: 18.00%
+    net: -113.66500000000087
+    b&h: 1746.8300000000008
 
-    ---result for 1.9e+01%---
-    net: -122.62525000000096
-    b&h: 964.3000000000002
+    fluctuation percentage: 18.50%
+    net: -113.66500000000087
+    b&h: 1746.8300000000008
 
-    ---result for 1.9e+01%---
-    net: -122.62525000000096
-    b&h: 964.3000000000002
+    fluctuation percentage: 19.00%
+    net: -113.66500000000087
+    b&h: 1746.8300000000008
 
-    ---result for 2e+01%---
-    net: -122.62525000000096
-    b&h: 964.3000000000002
+    fluctuation percentage: 19.50%
+    net: -113.66500000000087
+    b&h: 1746.8300000000008
 
-    ---result for 2e+01%---
-    net: -122.62525000000096
-    b&h: 964.3000000000002
+    fluctuation percentage: 20.00%
+    net: -113.66500000000087
+    b&h: 1746.8300000000008
 
-    ---result for 2.1e+01%---
-    net: -122.62525000000096
-    b&h: 964.3000000000002
-
+    fluctuation percentage: 20.50%
+    net: -113.66500000000087
+    b&h: 1746.8300000000008
