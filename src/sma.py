@@ -72,6 +72,7 @@ def sma(prices, days_in_average, simulation_mode, verbose_output, csv_col_idx):
             print("Error: Not enough data for number of days in moving average")
             sys.exit(1)
 
+    fee_rate = 0 
     moving_avg = average(prev_days) 
     bank_acct = 1_000_000 
     bought = False
@@ -82,13 +83,13 @@ def sma(prices, days_in_average, simulation_mode, verbose_output, csv_col_idx):
 
         if bought == False and today_price > moving_avg: 
             bought = True   
-            bank_acct -= today_price
+            bank_acct -= today_price * (1 + fee_rate) 
             if verbose_output or line.startswith(time.strftime("%Y-%m-%d")):
                 print("bought at " + format(today_price, ".2f"))
 
         elif bought == True and today_price < moving_avg: 
             bought = False
-            bank_acct += today_price
+            bank_acct += today_price * (1 - fee_rate) 
             if verbose_output or line.startswith(time.strftime("%Y-%m-%d")):
                 print("sold at " + format(today_price, ".2f"))
 
@@ -101,7 +102,7 @@ def sma(prices, days_in_average, simulation_mode, verbose_output, csv_col_idx):
     # Report stuff if this was ran in simulation mode
     if simulation_mode: 
         if bought: 
-            bank_acct += today_price
+            bank_acct += today_price * (1 - fee_rate) 
         print("net:" + format(bank_acct -1_000_000 , ".2f"))
         print("b&h:" + format(today_price - initial_price, ".2f") + "\n")
 

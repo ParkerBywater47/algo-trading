@@ -9,8 +9,7 @@ def main():
         sys.exit(1)
     
         
-    # the 4th column is closing price
-    col_idx = 2 
+    col_idx = 2  # which column of the csv the closing price is located in (0 base index of course)
     fluctuation_percentage = 0.01
     while fluctuation_percentage <= .21: 
 
@@ -18,7 +17,7 @@ def main():
             # discard header
             f.readline()
 
-            fee_rate = 0.002
+            fee_rate = 0 
     #        col_idx = 0
             
             days_in_uptrend = 0
@@ -68,8 +67,6 @@ def main():
             print("\n---result for " + format(100 * fluctuation_percentage, ".2") + "%---") 
             print("net:", money - 10000) 
             print("b&h:", (today_price - initial_price))
-            print("trades:", trades)
-            print("volume:", volume)
 
         fluctuation_percentage += 0.005
 
