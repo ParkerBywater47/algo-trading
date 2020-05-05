@@ -18,7 +18,6 @@ def main():
         usage()
         sys.exit(1)
     
-    print("Data file: " + sys.argv[1])
     with open(sys.argv[1]) as prices_csv:
         i = 2  
         while i < len(sys.argv): # have to do a while loop here because dumbass python 
