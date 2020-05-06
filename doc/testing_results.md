@@ -653,3 +653,30 @@
     fluctuation percentage: 20.50%
     net: -113.66500000000087
     b&h: 1746.8300000000008
+
+# sma.py with various sma lengths and 'volatility buffers' and got the following results (with a few less sig-figs)
+
+    sma length: 5
+    buffer: 0.075
+    times market average: 2.800
+
+    sma length: 13
+    buffer: 0.09
+    times market average: 2.704
+
+    sma length: 3
+    buffer: 0.065
+    times market average: 2.668
+
+    sma length: 3
+    buffer: 0.07
+    times market average: 2.365
+
+    sma length: 3
+    buffer: 0.08
+    times market average: 2.360
+
+    sma length: 12
+    buffer: 0.09
+    times market average: 2.345
+

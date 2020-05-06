@@ -18,48 +18,53 @@ def main():
         usage()
         sys.exit(1)
     
-    with open(sys.argv[1]) as prices_csv:
-        i = 2  
-        while i < len(sys.argv): # have to do a while loop here because dumbass python 
-            if sys.argv[i] == "-h":
-                if i != len(sys.argv) -1: 
-                    if sys.argv[i + 1] == "f" or sys.argv[i + 1] == "false":
-                        has_header = False 
-                        i = i+1
-                    else:
-                        print("Error: Invalid arg '" + sys.argv[i+1] + "'")
+    best_combinations = []
+    for threshold in range(15, 100, 5):    
+        for moving_avg_length in range(3, 48):
+            prices_csv = open(sys.argv[1])
+#        with open(sys.argv[1]) as prices_csv:
+            i = 2  
+            while i < len(sys.argv): # have to do a while loop here because dumbass python 
+                if sys.argv[i] == "-h":
+                    if i != len(sys.argv) -1: 
+                        if sys.argv[i + 1] == "f" or sys.argv[i + 1] == "false":
+                            has_header = False 
+                            i = i+1
+                        else:
+                            print("Error: Invalid arg '" + sys.argv[i+1] + "'")
+                            sys.exit(1)
+                    else: 
+                        print("Error: Expected argument with '" + sys.argv[i] + "' option")
                         sys.exit(1)
-                else: 
-                    print("Error: Expected argument with '" + sys.argv[i] + "' option")
-                    sys.exit(1)
-            elif sys.argv[i] == "-n":             
-                if i != len(sys.argv) -1: 
-                    if sys.argv[i + 1].isdigit():
-                        days_in_average = int(sys.argv[i + 1])
-                        i = i+1 
-                    else:
-                        print("Error: Invalid arg '" + sys.argv[i+1] + "'")
+                elif sys.argv[i] == "-n":             
+                    if i != len(sys.argv) -1: 
+                        if sys.argv[i + 1].isdigit():
+                            days_in_average = int(sys.argv[i + 1])
+                            i = i+1 
+                        else:
+                            print("Error: Invalid arg '" + sys.argv[i+1] + "'")
+                            sys.exit(1)
+                    else: 
+                        print("Error: Expected argument with '" + sys.argv[i] + "' option")
                         sys.exit(1)
+                elif sys.argv[i] == "-v": 
+                    verbose_output = True
+                elif sys.argv[i] == "-s":             
+                    simulation = True 
                 else: 
-                    print("Error: Expected argument with '" + sys.argv[i] + "' option")
+                    print("Error: Invalid arg '" + sys.argv[i] + "'")
                     sys.exit(1)
-            elif sys.argv[i] == "-v": 
-                verbose_output = True
-            elif sys.argv[i] == "-s":             
-                simulation = True 
-            else: 
-                print("Error: Invalid arg '" + sys.argv[i] + "'")
-                sys.exit(1)
-            i = i + 1
-    
-        # discard the header if it has one
-        if has_header: 
-            prices_csv.readline()        
+                i = i + 1
         
-        sma(prices_csv, days_in_average, simulation,verbose_output, csv_col_idx=2)
+            # discard the header if it has one
+            if has_header: 
+                prices_csv.readline()        
+            update_best(best_combinations, (moving_avg_length, threshold / 1000, sma(prices_csv, moving_avg_length, simulation,verbose_output, 2, threshold /1000 )))
+            prices_csv.close()
+    print(best_combinations)
     
 
-def sma(prices, days_in_average, simulation_mode, verbose_output, csv_col_idx):
+def sma(prices, days_in_average, simulation_mode, verbose_output, csv_col_idx, threshold):
     # compute the moving average to start
     prev_days = []
     for i in range(days_in_average): 
@@ -108,14 +113,31 @@ def sma(prices, days_in_average, simulation_mode, verbose_output, csv_col_idx):
     # Report stuff if this was ran in simulation mode
     if simulation_mode: 
         if bought: 
-            bank_acct += today_price #* (1 - fee_rate) 
-        #print(str(days_in_average) + "," + format((bank_acct -1_000_000) / (today_price - initial_price), "3.2f"))
-        print("net:" + format(bank_acct -1_000_000 , ".2f"))
-        print("b&h:" + format(today_price - initial_price, ".2f"))
-        print("trades:", trades_made)
-        print("volume:", volume )
+            bank_acct += today_price * (1 - fee_rate) 
 
- 
+        print(str(days_in_average) + ", " + format(threshold, "5.3f") + "," + format((bank_acct -1_000_000) / (today_price - initial_price), "3.2f"))
+#        print("net:" + format(bank_acct -1_000_000 , ".2f"))
+#        print("b&h:" + format(today_price - initial_price, ".2f"))
+#        print("trades:", trades_made)
+#        print("volume:", volume )
+    return (bank_acct -1_000_000) / (today_price - initial_price)
+
+
+def update_best(a_list, current): 
+    if len(a_list) < 6:
+        a_list.append(current)
+    else:
+        mindx = 0 
+        minimum = a_list[0][2]
+        for i in range(1, len(a_list)):
+            if a_list[i][2] < minimum: 
+                mindx = i
+                minimum = a_list[i][2]
+            
+        if current[2] > minimum: 
+            a_list[mindx] = current
+
+
 def usage(): 
     print("""USAGE: python sma.py data-file [options]
 OPTIONS: 
@@ -137,3 +159,5 @@ def average(lst):
 
 if __name__ == "__main__": 
     main()
+
+
