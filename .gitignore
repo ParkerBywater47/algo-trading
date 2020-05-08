@@ -3,4 +3,5 @@
 data/*.csv
 keys/*
 src/api_bs.py
-
+*/__pycache__
+*.pyc
