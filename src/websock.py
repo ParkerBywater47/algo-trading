@@ -2,7 +2,7 @@ import websocket
 import json
 import _thread as thread
 import time
-import sma
+import algos
 
 
 last_trade_time = time.time() - 4000 # wow Parker.. A global and a magic number? 
@@ -14,12 +14,13 @@ def on_message(ws, message):
     This function seems to be called every time a message is sent or received" 
     """ 
     try: 
-        resp = json.loads(message)
+        current_price = float(json.loads(message)['price'])
         if time.time() >= last_trade_time + 3600: 
-            algos.sma(resp['price'], previous_periods)
-                         
+            #algos.sma(current_price, previous_periods)
+            previous_periods.append(current_price)
+            previous_periods.pop(0)
 
-        print(resp['price'])
+        print(current_price)
         
     except Exception as ex:
         print(ex)

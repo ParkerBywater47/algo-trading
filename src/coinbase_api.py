@@ -25,7 +25,7 @@ def make_coinbase_request(method, path, req_body=''):
             }
 
     if method == "GET": 
-        resp = requests.get(ENDPOINT + path, headers=headers)
+        resp = requests.get(ENDPOINT + path, headers=headers, json=req_body)
     elif method == "POST":
         resp = requests.post(ENDPOINT + path, headers=headers, json=req_body)
     else: 
@@ -33,9 +33,10 @@ def make_coinbase_request(method, path, req_body=''):
         sys.exit(1)
     
     if isinstance(resp.json(), list):
-        print(resp.json()[0])
+        # use json.dumps because Python prints with fucking single quotes
+        print(json.dumps(resp.json()[0]))
     else: 
-        print(resp.json())
+        print(json.dumps(resp.json()))
 
 
 def sign(method, path,  secret, timestamp, req_body=""): 
@@ -51,14 +52,17 @@ def sign(method, path,  secret, timestamp, req_body=""):
 
 def main(): 
     """ a test main """
-    make_coinbase_request("GET", "/accounts")
+    fucking_work = {
+        "currency": "BTC"
+    }
+    make_coinbase_request("GET", "/accounts", fucking_work)
     order = {
-        'size': 0.5,
-       'price': 9882,
+        'size': 0.05,
+       'price': 9836,
         'side': 'buy',
        'product_id': 'BTC-USD',
     }
-    make_coinbase_request("POST", "/orders", order) 
+    #make_coinbase_request("POST", "/orders", order) 
     #make_coinbase_request("GET", "/orders") 
 
 
