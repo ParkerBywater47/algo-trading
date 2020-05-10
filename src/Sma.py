@@ -1,4 +1,5 @@
 import cmc_api
+import coinbase_api
 from TradeAlgorithm import TradeAlgorithm
 
 
@@ -12,7 +13,7 @@ class Sma(TradeAlgorithm):
         self.__logfile_path = logfile_path
 
 
-    def run(self, last_trade_time):
+    def run(self):
         print("ran algo")
         current_price = cmc_api.get_price()
         moving_avg = self.average(self.__previous_periods) 
@@ -25,7 +26,6 @@ class Sma(TradeAlgorithm):
             log = open(self.__logfile_path, "a")
             print("bought " + format(self.__coin_balance, ".5f") + " at " + format(current_price, ".2f") + " with sma = " + moving_avg, file=log)
             log.close() 
-            return time.time()
 
         elif self.__bought == True and current_price < moving_avg * (1 - self.__threshold): 
             self.__bought = False
@@ -35,13 +35,11 @@ class Sma(TradeAlgorithm):
             print("sold " + format(self.__coin_balance, ".5f") + " at " + format(current_price, ".2f") + " with sma = " + moving_avg, file=log)
             log.close() 
             self.__coin_balance = 0
-            return time.time()
       
         # update previous periods
         self.__previous_periods.append(current_price)
         self.__previous_periods.pop(0)
 
-        return last_trade_time 
         
 
     def get_previous_periods(self): 

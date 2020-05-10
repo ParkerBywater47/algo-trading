@@ -16,12 +16,12 @@ def main():
     simulation = True
 
     # best performer
-#    periods_in_average = 5
-#    volatility_buffer = .075   
+    periods_in_average = 5
+    volatility_buffer = .075   
 
     # second best performer
-    periods_in_average = 13
-    volatility_buffer = 0.09   
+#    periods_in_average = 13
+#    volatility_buffer = 0.09   
 
     # try to open the file 
     if len(sys.argv) < 2:
@@ -92,6 +92,7 @@ def sma(prices, periods_in_average, simulation_mode, verbose_output, threshold, 
     bought = False
     for line in prices: 
         today_price = float(line.split(",")[csv_col_idx]) 
+        today = line.split(",")[0]
 #        if verbose_output:
 #            print("today: " + format(today_price, "<10.2f")  + "avg: "  + format(moving_avg, ".2f"))
 
@@ -101,13 +102,13 @@ def sma(prices, periods_in_average, simulation_mode, verbose_output, threshold, 
             cash_money -= max_purchase_amt
             coins_owned += max_purchase_amt / today_price 
             if verbose_output or line.startswith(time.strftime("%Y-%m-%d")):
-                print("bought " + format(coins_owned, ".5f") + " at " + format(today_price, ".2f"))
+                print("bought " + format(coins_owned, ".5f") + " at " + format(today_price, ".2f") + " at " + today )
 
         elif bought == True and today_price < moving_avg * (1 - threshold) : 
             bought = False
             cash_money += (coins_owned * today_price) / (1 + fee_rate)
             if verbose_output or line.startswith(time.strftime("%Y-%m-%d")):
-                print("bought " + format(coins_owned, ".5f") + " at " + format(today_price, ".2f"))
+                print("bought " + format(coins_owned, ".5f") + " at " + format(today_price, ".2f") + " at " + today)
             coins_owned = 0
 
         # update moving average  
