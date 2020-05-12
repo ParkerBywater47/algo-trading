@@ -9,8 +9,7 @@ def main():
     algo = Sma(bought=False, coin_balance=0, cash_balance=450, previous_periods=[9691.34, 9750.07, 9756.42, 9718.63, 9719.22], logfile_path="logs/btc_trade_driver.log") 
     while True:
         algo.run()  
-        print(algo.get_previous_periods())
-        time.sleep(3600)
+        time.sleep(3600) 
 
 
 if __name__ == "__main__": 
