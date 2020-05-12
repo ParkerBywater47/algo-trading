@@ -10,7 +10,7 @@ class Sma(TradeAlgorithm):
         self.__coin_balance = coin_balance
         self.__cash_balance = cash_balance
         self.__previous_periods = previous_periods
-        self.__threshold = .03 # see doc/testing-results.md to understand this number
+        self.__threshold = .075 # see doc/testing-results.md to understand this number
         self.__logfile_path = logfile_path
         self.__fee_rate = .005
         self.__smallest_trade_amt = .000001

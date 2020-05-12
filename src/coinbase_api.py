@@ -4,7 +4,7 @@ import json, hashlib, time, requests, base64, hmac, sys
 SANDBOX_ENDPOINT = "https://api-public.sandbox.pro.coinbase.com"
 LIVE_ENDPOINT = "https://api.pro.coinbase.com"
 
-ENDPOINT = SANDBOX_ENDPOINT
+ENDPOINT = LIVE_ENDPOINT
 if ENDPOINT == LIVE_ENDPOINT:
     key_file = open("keys/coinbase.txt")
     API_KEY = key_file.readline().strip()
