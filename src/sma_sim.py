@@ -3,7 +3,7 @@ import time
 
 # these wouldn't be globals if Python supported constants
 starting_capital = 450
-fee_rate = .015
+fee_rate = .005
 
 
 def main(): 
@@ -22,6 +22,10 @@ def main():
     # second best performer
 #    periods_in_average = 13
 #    volatility_buffer = 0.09   
+
+    # a good performer over the 2020 dataset
+    periods_in_average = 3
+    volatility_buffer = .03
 
     # try to open the file 
     if len(sys.argv) < 2:
@@ -108,7 +112,7 @@ def sma(prices, periods_in_average, simulation_mode, verbose_output, threshold, 
             bought = False
             cash_money += (coins_owned * today_price) / (1 + fee_rate)
             if verbose_output or line.startswith(time.strftime("%Y-%m-%d")):
-                print("bought " + format(coins_owned, ".5f") + " at " + format(today_price, ".2f") + " at " + today)
+                print("sold " + format(coins_owned, ".5f") + " at " + format(today_price, ".2f") + " at " + today)
             coins_owned = 0
 
         # update moving average  
