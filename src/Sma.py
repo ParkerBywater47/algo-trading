@@ -10,7 +10,7 @@ class Sma(TradeAlgorithm):
         self.__coin_balance = coin_balance
         self.__cash_balance = cash_balance
         self.__previous_periods = previous_periods
-        self.__threshold = .075 # see doc/testing-results.md to understand this number
+        self.__threshold = .03 # see doc/testing-results.md to understand this number
         self.__logfile_path = logfile_path
         self.__fee_rate = .005
         self.__smallest_trade_amt = .000001
@@ -36,7 +36,7 @@ class Sma(TradeAlgorithm):
         if self.__bought == False and current_price > moving_avg * (1 + self.__threshold): 
             self.__bought = True   
             max_purchase_amt = self.__cash_balance / (1 + self.__fee_rate)
-            self.__cash_balance -= max_purchase_amt
+            self.__cash_balance = 0
             self.__coin_balance += int((max_purchase_amt / ask_price) * (1 / self.__smallest_trade_amt)) * self.__smallest_trade_amt
             self.__do_logging("bought " + format(self.__coin_balance, ".5f") + " at " + format(ask_price, ".2f"), log)
             

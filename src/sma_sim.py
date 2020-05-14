@@ -97,13 +97,14 @@ def sma(prices, periods_in_average, simulation_mode, verbose_output, threshold, 
     for line in prices: 
         today_price = float(line.split(",")[csv_col_idx]) 
         today = line.split(",")[0]
-#        if verbose_output:
-#            print("today: " + format(today_price, "<10.2f")  + "avg: "  + format(moving_avg, ".2f"))
+        if verbose_output:
+            print("today: " + format(today_price, "<10.2f")  + "avg: "  + format(moving_avg, ".2f"))
+            print("cash: " + str(cash_money) + "    " + "coins owned: " + str(coins_owned))
 
         if bought == False and today_price > moving_avg * (1 + threshold) : 
             bought = True   
             max_purchase_amt = cash_money / (1 + fee_rate)
-            cash_money -= max_purchase_amt
+            cash_money = 0
             coins_owned += max_purchase_amt / today_price 
             if verbose_output or line.startswith(time.strftime("%Y-%m-%d")):
                 print("bought " + format(coins_owned, ".5f") + " at " + format(today_price, ".2f") + " at " + today )
