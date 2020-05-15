@@ -16,15 +16,15 @@ def main():
     simulation = True
 
     # best performer
-    periods_in_average = 5
-    volatility_buffer = .075   
+#    periods_in_average = 5
+#    volatility_buffer = .075   
 
     # second best performer
 #    periods_in_average = 13
 #    volatility_buffer = 0.09   
 
     # a good performer over the 2020 dataset
-    periods_in_average = 3
+    periods_in_average = 3 
     volatility_buffer = .03
 
     # try to open the file 
