@@ -25,7 +25,7 @@ class Sma(TradeAlgorithm):
 
         # trade stuff 
         current_price = coinbase_api.get_price()
-        ask_price = int(current_price * 1.0025 * 100) / 100
+        ask_price = int(current_price * 1.0015)
         stop_loss_price = int(ask_price * 100 * .9) / 100 
         moving_avg = self.average(self.__previous_periods) 
        
@@ -48,7 +48,7 @@ class Sma(TradeAlgorithm):
             }
             stop_loss_order = {
                 'size': self.__coin_balance,
-                'price': int(stop_loss_price * .9975 * 100)/ 100, 
+                'price': int(stop_loss_price * .9985 * 100)/ 100, 
                 'side': 'sell', 
                 'product_id': 'BTC-USDC',
                 'stop': 'loss', 
