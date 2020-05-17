@@ -1,0 +1,5 @@
+# 5/15/20
+* Fixed a bug in `btc_trade_driver.py`. Was constructing `Sma` algo with the wrong cash balance. 
+* Removed some junk from `Sma.py`
+
+
