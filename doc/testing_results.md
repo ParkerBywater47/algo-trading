@@ -680,3 +680,29 @@
     buffer: 0.09
     times market average: 2.345
 
+# ema.py with .005 fee rate. Testing ema lengths from 1 to 50 and price movement thresholds from .005 to .1 on the 2020 dataset
+
+    sma_length: 3
+    threshold: 0.03
+    times market: 4.736
+
+    sma_length: 2
+    threshold: 0.032
+    times market: 4.514
+
+    sma_length: 3
+    threshold: 0.031
+    times market: 4.377
+
+    sma_length: 2
+    threshold: 0.028
+    times market: 4.146
+
+    sma_length: 2
+    threshold: 0.029
+    times market: 4.146
+
+    sma_length: 3
+    threshold: 0.032
+    times market: 4.061
+

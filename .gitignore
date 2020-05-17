@@ -7,3 +7,4 @@ src/api_bs.py
 *.pyc
 *.pdf
 logs/
+research/
