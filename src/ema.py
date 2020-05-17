@@ -100,7 +100,6 @@ def simulate(price_data, ema_length, price_movement_threshold, starting_capital=
 #    print("sma:", sma)
 #    print("start:", start_day_price)
         
-    print("verbose_output:", verbose_output) 
     coins_owned = 0
     cash_money = starting_capital
     bought = False
