@@ -75,7 +75,7 @@ def main():
         sma(prices_csv, periods_in_average, simulation, verbose_output, volatility_buffer, csv_col_idx=2)
     
 
-def sma(prices, periods_in_average, simulation_mode, verbose_output, threshold, csv_col_idx):
+def sma(prices, periods_in_average, threshold, verbose_output, threshold):
     # compute the moving average to start
     prev_days = []
     for i in range(periods_in_average): 
