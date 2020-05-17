@@ -23,7 +23,6 @@ def main():
         # discard header
         f.readline()
         
-        # the 4th column is closing price
         col_idx = 2 
 #        col_idx = 0
         
@@ -41,6 +40,8 @@ def main():
         today_price =  float(name[col_idx])
         today = name[0]
         in_downtrend = today_price < yesterday_price
+        fee_rate = .005
+        fees = 0
         for line in f: 
             # print(format(today_price, ".3f"),  "\tup:", format(average_days_in_uptrend, ".3f"), "\tdown:", format(average_days_in_downtrend, ".3f"))
 
@@ -61,18 +62,22 @@ def main():
             if bought and today_price < stop_loss_price: 
                 bought = False
                 money += today_price
-                print("stop-loss @ " + str(today_price) +  " on " + today + "\ncontinue trading?")
+                fees = 0 
+                print("stop-loss @ " + str(today_price) +  " on " + today)
 
             # buy logic
             if days_in_downtrend >= average_days_in_downtrend and not bought: 
                 bought = True
-                money -= today_price * 1.002
+                money -= today_price * (1 + fee_rate)
                 stop_loss_price = .90 * today_price
+                fees += fee_rate * today_price
+                last_buy_price = today_price
                 print("bought @", today_price, "on " + today)
             elif bought and days_in_uptrend >= average_days_in_uptrend: 
-                bought = False
-                money += today_price * .998
-                print("sold @", today_price, "on " + today)
+                if (today_price - last_buy_price) > (fees + fee_rate * today_price):
+                    bought = False
+                    money += today_price * (1 - fee_rate)
+                    print("sold @", today_price, "on " + today)
             
             # update prices
             yesterday_price = today_price
@@ -81,7 +86,7 @@ def main():
         
         # print simulation results 
         if bought: 
-            money += today_price 
+            money += today_price * (1 + fee_rate)
         print("net:", money - 10000) 
         print("b&h:", (today_price - initial_price))
 
