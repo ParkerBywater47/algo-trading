@@ -76,9 +76,10 @@ def main():
         price_data.append(float(line.split(",")[price_data_idx]))
 
     best_performers = []
-    for ema_length in range(3,50):
+    for ema_length in range(1,50):
         for price_movement_threshold in range(5, 100):
-            update_best(best_performers, (ema_length, price_movement_threshold / 1000, ema.simulate(price_data, ema_length, price_movement_threshold / 1000, verbose_output)))
+            update_best(best_performers, \
+                (ema_length, price_movement_threshold / 1000, ema.simulate(price_data, ema_length, price_movement_threshold / 1000, verbose_output=verbose_output, silent=True)))
     print(best_performers)
 
 

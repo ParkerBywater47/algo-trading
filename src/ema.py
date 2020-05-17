@@ -9,20 +9,16 @@ def main():
     """ see usage function """
     has_header = True
     prices_csv = None
-    simulation = True
+    silent = False
     verbose_output = False
 
-    # best performer
-#    periods_in_average = 5
-#    volatility_buffer = .075   
-
-    # second best performer
-#    periods_in_average = 13
-#    volatility_buffer = 0.09   
-
-    # a good performer over the 2020 dataset
+    # best performer for 2020 dataset
     periods_in_average = 3 
     volatility_buffer = .03
+
+    # second best performer over 2020 dataset
+    periods_in_average = 2
+    volatility_buffer = .032   
 
     # try to open the file 
     if len(sys.argv) < 2:
@@ -59,7 +55,7 @@ def main():
             elif sys.argv[i] == "-v": 
                 verbose_output = True
             elif sys.argv[i] == "-s":             
-                simulation = True 
+                silent = True 
             else: 
                 print("Error: Invalid arg '" + sys.argv[i] + "'")
                 sys.exit(1)
@@ -77,7 +73,7 @@ def main():
         simulate(price_data, periods_in_average, volatility_buffer, verbose_output=verbose_output)
     
 
-def simulate(price_data, ema_length, price_movement_threshold, starting_capital=450, fee_rate=.005, verbose_output=False):
+def simulate(price_data, ema_length, price_movement_threshold, starting_capital=450, fee_rate=.005, verbose_output=False, silent=False):
     # compute an sma to start
     sum_for_avg = 0 
     for i in range(ema_length): 
@@ -126,15 +122,17 @@ def simulate(price_data, ema_length, price_movement_threshold, starting_capital=
         # update exponential moving average  
         ema = today_price * multiplier + ema * (1 - multiplier)  
  
-    print(today_price)
-    # Report stuff 
     if bought: 
         cash_money += (coins_owned * today_price) / (1 + fee_rate)
 
+    if not silent:
+        print("algo: " + format(cash_money - starting_capital, ".2f"))
+        print("market: " + format((initial_coin_purchase * today_price / (1 + fee_rate))- starting_capital, ".2f"))
+    
+    return (cash_money - starting_capital) / ((initial_coin_purchase * today_price / (1 + fee_rate))- starting_capital)
+
 #    print(str(ema_length) + ", " + format(threshold, "5.3f") + "," + format((bank_acct -1_000_000) / (today_price - initial_price), "3.2f"))
 #    print(initial_coin_purchase) 
-    print("algo: " + format(cash_money - starting_capital, ".2f"))
-    print("market: " + format((initial_coin_purchase * today_price / (1 + fee_rate))- starting_capital, ".2f"))
 
 
 def update_best(a_list, current): 
