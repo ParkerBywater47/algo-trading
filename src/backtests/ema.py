@@ -11,7 +11,7 @@ def main():
     prices_csv = None
     silent = False
     verbose_output = False
-
+    
     # best performer for 2020 dataset
     periods_in_average = 3 
     volatility_buffer = .03
@@ -61,7 +61,7 @@ def main():
                 sys.exit(1)
             i = i + 1
 
-        
+
         # discard the header if it has one
         if has_header: 
             prices_csv.readline()        
@@ -73,7 +73,7 @@ def main():
         simulate(price_data, periods_in_average, volatility_buffer, verbose_output=verbose_output)
     
 
-def simulate(price_data, ema_length, price_movement_threshold, starting_capital=450, fee_rate=.005, verbose_output=False, silent=False):
+def simulate(price_data, ema_length=3, price_movement_threshold=.03, starting_capital=450, fee_rate=.005, verbose_output=False, silent=False):
     # compute an sma to start
     sum_for_avg = 0 
     for i in range(ema_length): 

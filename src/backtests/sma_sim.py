@@ -71,14 +71,16 @@ def main():
         # discard the header if it has one
         if has_header: 
             prices_csv.readline()        
+        price_data = []
+        price_data_idx = 2
 
-        sma(prices_csv, periods_in_average, simulation, verbose_output, volatility_buffer, csv_col_idx=2)
+        simulate(prices, periods_in_average, simulation, verbose_output, volatility_buffer, csv_col_idx=2)
     
 
-def sma(prices, periods_in_average, threshold, verbose_output, threshold):
+def simulate(price_data, sma_length=3, price_movement_threshold=.03, starting_capital=450, fee_rate=.005, verbose_output=False, silent=False):
     # compute the moving average to start
-    prev_days = []
-    for i in range(periods_in_average): 
+    sum_for_avg = 0
+    for i in range(sma_length): 
         line = prices.readline()
         if i == 0: 
             max_purchase_amt = starting_capital / (1 + fee_rate)
@@ -106,13 +108,13 @@ def sma(prices, periods_in_average, threshold, verbose_output, threshold):
             max_purchase_amt = cash_money / (1 + fee_rate)
             cash_money = 0
             coins_owned += max_purchase_amt / today_price 
-            if verbose_output or line.startswith(time.strftime("%Y-%m-%d")):
+            if verbose_output:
                 print("bought " + format(coins_owned, ".5f") + " at " + format(today_price, ".2f") + " at " + today )
 
         elif bought == True and today_price < moving_avg * (1 - threshold) : 
             bought = False
             cash_money += (coins_owned * today_price) / (1 + fee_rate)
-            if verbose_output or line.startswith(time.strftime("%Y-%m-%d")):
+            if verbose_output: 
                 print("sold " + format(coins_owned, ".5f") + " at " + format(today_price, ".2f") + " at " + today)
             coins_owned = 0
 
@@ -123,14 +125,13 @@ def sma(prices, periods_in_average, threshold, verbose_output, threshold):
   
 
     # Report stuff if this was ran in simulation mode
-    if simulation_mode: 
-        if bought: 
-            cash_money += (coins_owned * today_price) / (1 + fee_rate)
+    if bought: 
+        cash_money += (coins_owned * today_price) / (1 + fee_rate)
 
 #        print(str(periods_in_average) + ", " + format(threshold, "5.3f") + "," + format((bank_acct -1_000_000) / (today_price - initial_price), "3.2f"))
 #        print(initial_coin_purchase) 
-        print("algo: " + format(cash_money - starting_capital, ".2f"))
-        print("market: " + format((initial_coin_purchase * today_price / (1 + fee_rate))- starting_capital, ".2f"))
+    print("algo: " + format(cash_money - starting_capital, ".2f"))
+    print("market: " + format((initial_coin_purchase * today_price / (1 + fee_rate))- starting_capital, ".2f"))
 
 
 def update_best(a_list, current): 

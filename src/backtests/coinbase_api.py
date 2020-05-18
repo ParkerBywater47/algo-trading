@@ -1,20 +1,11 @@
 import json, hashlib, time, requests, base64, hmac, sys
 
 
-SANDBOX_ENDPOINT = "https://api-public.sandbox.pro.coinbase.com"
-LIVE_ENDPOINT = "https://api.pro.coinbase.com"
-
-ENDPOINT = LIVE_ENDPOINT
-if ENDPOINT == LIVE_ENDPOINT:
-    key_file = open("keys/coinbase.txt")
-    API_KEY = key_file.readline().strip()
-    API_SECRET = key_file.readline().strip()
-    API_PASS = key_file.readline().strip()
-else:
-    key_file = open("keys/coinbase-sandbox.txt")
-    API_KEY = key_file.readline().strip()
-    API_SECRET = key_file.readline().strip()
-    API_PASS = key_file.readline().strip()
+ENDPOINT = "https://api-public.sandbox.pro.coinbase.com"
+key_file = open("keys/coinbase-sandbox.txt")
+API_KEY = key_file.readline().strip()
+API_SECRET = key_file.readline().strip()
+API_PASS = key_file.readline().strip()
 key_file.close()
 
 
@@ -86,7 +77,7 @@ def main():
     print(get_BTC_balance())
     print(get_USDC_balance())
     print(get_price())
-    print(json.dumps(coinbase_GET("/products/BTC-USDC/ticker"), sort_keys=True, indent=4))
+    print(json.dumps(coinbase_GET("/products/BTC-USD/ticker"), sort_keys=True, indent=4))
 
 
 def sign(method, path,  secret, timestamp, req_body=""): 
@@ -99,6 +90,7 @@ def sign(method, path,  secret, timestamp, req_body=""):
 
 def get_price(): 
     """ return the price to a precision of two decimal points because Coinbase requires this """ 
+    return float(coinbase_GET("/products/BTC-USD/ticker")["bid"])
     return float(requests.get("https://api.coinbase.com/v2/exchange-rates?currency=BTC").json()['data']['rates']['USD'])
 
 
