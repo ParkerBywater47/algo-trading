@@ -11,7 +11,7 @@ class Sma(TradeAlgorithm):
         self.__threshold = .03 # see doc/testing-results.md to understand this number
         self.__log = open(logfile_path, "a")
         self.__fee_rate = .005
-        self.__smallest_trade_amt = .000001
+        self.__order_precision = 10 ** 6
         self.__stop_loss_id = None
 
 
@@ -37,7 +37,7 @@ class Sma(TradeAlgorithm):
             max_purchase_amt = coinbase_api.get_USDC_balance() / (1 + self.__fee_rate)
 
             # determine quantity of BTC to purchase            
-            coin_purchase = int((max_purchase_amt / bid_price) * (10 ** 6)) / (10**6)
+            coin_purchase = int((max_purchase_amt / bid_price) * self.__order_precision) / self.__order_precision
 
             # make the orders and log the responses in case of error
             buy_order = {
@@ -70,7 +70,7 @@ class Sma(TradeAlgorithm):
             self.__bought = False
             ask_price = coinbase_api.get_ask()
             max_sell_amt = coinbase_api.get_BTC_balance() / (1 + self.__fee_rate) 
-            coins_to_sell = int(coinbase_api.get_BTC_balance() * (1 / self.__smallest_trade_amt)) * self.__smallest_trade_amt
+            coins_to_sell = int(coinbase_api.get_BTC_balance() * self.__order_precision) / self.__order_precision
 
             sell_order = {
                 'size': coins_to_sell,
