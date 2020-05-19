@@ -2,6 +2,7 @@ import json, hashlib, time, requests, base64, hmac, sys
 
 
 ENDPOINT = "https://api-public.sandbox.pro.coinbase.com"
+
 key_file = open("keys/coinbase-sandbox.txt")
 API_KEY = key_file.readline().strip()
 API_SECRET = key_file.readline().strip()
@@ -23,7 +24,7 @@ def get_USDC_balance():
     
     # search for USDC in the list
     for i in accounts_get:
-        if i["currency"] == "USDC": 
+        if i["currency"] == "USD": 
             return float(i["available"])    
 
 
@@ -74,9 +75,11 @@ def coinbase_DELETE(path, request_body=''):
 
 def main(): 
     """for tests and such"""
-    print(get_BTC_balance())
-    print(get_USDC_balance())
-    print(get_price())
+    #print(get_BTC_balance())
+    #print(get_USDC_balance())
+    print("pro price:", get_price())
+    print("public price:", public_price())
+    
     print(json.dumps(coinbase_GET("/products/BTC-USD/ticker"), sort_keys=True, indent=4))
 
 
@@ -88,10 +91,21 @@ def sign(method, path,  secret, timestamp, req_body=""):
     return signature_b64_encoded
 
 
-def get_price(): 
-    """ return the price to a precision of two decimal points because Coinbase requires this """ 
+def get_bid(): 
     return float(coinbase_GET("/products/BTC-USD/ticker")["bid"])
-    return float(requests.get("https://api.coinbase.com/v2/exchange-rates?currency=BTC").json()['data']['rates']['USD'])
+
+
+def get_ask(): 
+    return float(coinbase_GET("/products/BTC-USD/ticker")["bid"])
+
+
+def get_price(): 
+    return float(coinbase_GET("/products/BTC-USD/ticker")["price"])
+
+
+# This should not be used, but I left the code here because I don't want to go find it again if I need it
+#def public_price():
+#    return float(requests.get("https://api.coinbase.com/v2/exchange-rates?currency=BTC").json()['data']['rates']['USD'])
 
 
 def path_builder(path, get_params):

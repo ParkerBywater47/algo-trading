@@ -83,10 +83,16 @@ def coinbase_DELETE(path, request_body=''):
 
 def main(): 
     """for tests and such"""
-    print(get_BTC_balance())
-    print(get_USDC_balance())
-    print(get_price())
-    print(json.dumps(coinbase_GET("/products/BTC-USDC/ticker"), sort_keys=True, indent=4))
+    stop_loss_order = {
+        'size': 1,
+        'price': get_price(), 
+        'side': 'sell', 
+        'product_id': 'BTC-USDC',
+        'stop': 'loss', 
+        'stop_price': int(get_price() * .9 * 100) / 100
+    }
+    print(json.dumps(coinbase_POST("/orders", stop_loss_order), sort_keys=True, indent=4))
+    print(json.dumps(coinbase_GET("/products/BTC-USD/ticker"), sort_keys=True, indent=4))
 
 
 def sign(method, path,  secret, timestamp, req_body=""): 
@@ -97,9 +103,22 @@ def sign(method, path,  secret, timestamp, req_body=""):
     return signature_b64_encoded
 
 
+def get_bid(): 
+    return float(coinbase_GET("/products/BTC-USD/ticker")["bid"])
+
+
+def get_ask(): 
+    return float(coinbase_GET("/products/BTC-USD/ticker")["bid"])
+
+
 def get_price(): 
     """ return the price to a precision of two decimal points because Coinbase requires this """ 
-    return float(requests.get("https://api.coinbase.com/v2/exchange-rates?currency=BTC").json()['data']['rates']['USD'])
+    return float(coinbase_GET("/products/BTC-USD/ticker")["price"])
+
+
+# This should not be used, but I left the code here because I don't want to go find it again if I need it
+#def public_price():
+#    return float(requests.get("https://api.coinbase.com/v2/exchange-rates?currency=BTC").json()['data']['rates']['USD'])
 
 
 def path_builder(path, get_params):
@@ -111,8 +130,6 @@ def path_builder(path, get_params):
     for key in get_params.keys():
         out += "?" + key + "=" + get_params[key] + "&"
     return out
-
-
 
 
 if __name__ == "__main__": 
