@@ -11,14 +11,27 @@ def main():
     prices_csv = None
     silent = False
     verbose_output = False
+
+    # best performer over 2017-now dataset with sma
+#    periods_in_average = 5 
+#    volatility_buffer = .075
     
     # best performer for 2020 dataset
     periods_in_average = 3 
     volatility_buffer = .03
 
+    periods_in_average = 4 
+    volatility_buffer = .03
+    
+
     # second best performer over 2020 dataset
-    periods_in_average = 2
-    volatility_buffer = .032   
+#    periods_in_average = 2
+#    volatility_buffer = .032   
+
+    # good performer over 2017-now dataset
+#    periods_in_average = 1
+#    volatility_buffer = .058   
+    
 
     # try to open the file 
     if len(sys.argv) < 2:
@@ -101,8 +114,8 @@ def simulate(price_data, ema_length=3, price_movement_threshold=.03, starting_ca
     bought = False
     for today_price in price_data[i+2:]: 
         if verbose_output:
-            print("today: " + format(today_price, "<10.2f")  + "avg: "  + format(ema, ".2f"))
-            print("cash: " + str(cash_money) + "    " + "coins owned: " + str(coins_owned))
+            print("today: " + format(today_price, "<10.2f")  + "signal price: "  + format(ema * (1 + price_movement_threshold), ".2f"))
+#            print("cash: " + str(cash_money) + "    " + "coins owned: " + str(coins_owned))
 
         if bought == False and today_price > ema * (1 + price_movement_threshold) : 
             bought = True   

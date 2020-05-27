@@ -73,8 +73,10 @@ def main():
             prices_csv.readline()        
         price_data = []
         price_data_idx = 2
+        for line in prices_csv:
+            price_data.append(float(line.split(",")[price_data_idx])) 
 
-        simulate(prices, periods_in_average, simulation, verbose_output, volatility_buffer, csv_col_idx=2)
+        simulate(price_data, periods_in_average, simulation, verbose_output, volatility_buffer, csv_col_idx=2)
     
 
 def simulate(price_data, sma_length=3, price_movement_threshold=.03, starting_capital=450, fee_rate=.005, verbose_output=False, silent=False):

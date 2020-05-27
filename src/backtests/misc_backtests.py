@@ -138,6 +138,10 @@ def double_sma(prices, short_average_length, long_average_length, verbose_output
 #    print(initial_coin_purchase) 
 
 
+def tune_params_ma():
+    pass 
+
+
 def update_best(a_list, current): 
     if len(a_list) < 6:
         a_list.append(current)
@@ -151,6 +155,8 @@ def update_best(a_list, current):
             
         if current[2] > minimum: 
             a_list[mindx] = current
+
+
 
 
 def usage(): 

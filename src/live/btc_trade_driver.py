@@ -4,11 +4,11 @@ from Sma import Sma
 
 
 def main():
-    an_hour = 3600                                              # an hour in seconds forcode readablility
-    algo = Sma(bought=False, previous_periods=[9894.985, 9876.705, 9802.19], logfile_path="logs/btc_trade_driver.log") 
+    sleep_time_in_seconds = 3599                                
+    algo = Sma(bought=False, previous_periods=[8778.11, 8810.0, 8783.19], logfile_path="logs/btc_trade_driver.log") 
     while True:
         algo.run()  
-        time.sleep(3600) 
+        time.sleep(sleep_time_in_seconds) 
 
 
 if __name__ == "__main__": 

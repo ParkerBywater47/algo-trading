@@ -82,18 +82,11 @@ def coinbase_DELETE(path, request_body=''):
 
 
 def main(): 
-    """for tests and such"""
-    stop_loss_order = {
-        'size': 1,
-        'price': get_price(), 
-        'side': 'sell', 
-        'product_id': 'BTC-USDC',
-        'stop': 'loss', 
-        'stop_price': int(get_price() * .9 * 100) / 100
-    }
-    print(json.dumps(coinbase_POST("/orders", stop_loss_order), sort_keys=True, indent=4))
-    print(json.dumps(coinbase_GET("/products/BTC-USD/ticker"), sort_keys=True, indent=4))
-
+    #print(json.dumps(get_products(), sort_keys=True, indent=4)) 
+    print(get_price()) 
+    print(get_bid()) 
+    print(get_ask()) 
+   
 
 def sign(method, path,  secret, timestamp, req_body=""): 
     message = timestamp + method + path + (req_body if req_body == "" else str(json.dumps(req_body))) 
@@ -103,17 +96,20 @@ def sign(method, path,  secret, timestamp, req_body=""):
     return signature_b64_encoded
 
 
-def get_bid(): 
-    return float(coinbase_GET("/products/BTC-USD/ticker")["bid"])
+def get_bid(ticker="BTC-USDC"): 
+    return float(coinbase_GET("/products/" + ticker + "/ticker")["bid"])
 
 
-def get_ask(): 
-    return float(coinbase_GET("/products/BTC-USD/ticker")["bid"])
+def get_ask(ticker="BTC-USDC"): 
+    return float(coinbase_GET("/products/" + ticker + "/ticker")["ask"])
 
 
-def get_price(): 
-    """ return the price to a precision of two decimal points because Coinbase requires this """ 
-    return float(coinbase_GET("/products/BTC-USD/ticker")["price"])
+def get_price(ticker="BTC-USDC"): 
+    return float(coinbase_GET("/products/" + ticker + "/ticker")["price"])
+
+
+def get_products(): 
+    return coinbase_GET("/products")
 
 
 # This should not be used, but I left the code here because I don't want to go find it again if I need it
