@@ -1,98 +1,14 @@
 import sys 
 import time
 
-# these wouldn't be globals if Python supported constants
-fee_rate = .005
-
-
-def main(): 
-    """ see usage function """
-    has_header = True
-    prices_csv = None
-    silent = False
-    verbose_output = False
-
-    # best performer over 2017-now dataset with sma
-#    periods_in_average = 5 
-#    volatility_buffer = .075
-    
-    # best performer for 2020 dataset
-    periods_in_average = 3 
-    volatility_buffer = .03
-
-    periods_in_average = 4 
-    volatility_buffer = .03
-    
-
-    # second best performer over 2020 dataset
-#    periods_in_average = 2
-#    volatility_buffer = .032   
-
-    # good performer over 2017-now dataset
-#    periods_in_average = 1
-#    volatility_buffer = .058   
-    
-
-    # try to open the file 
-    if len(sys.argv) < 2:
-        print("Error: no data file given")
-        usage() 
-        sys.exit(1)
-    
-    prices_csv = open(sys.argv[1])
-    with open(sys.argv[1]) as prices_csv:
-        i = 2  
-        while i < len(sys.argv): # have to do a while loop here because dumbass python 
-            if sys.argv[i] == "-h":
-                if i != len(sys.argv) -1: 
-                    if sys.argv[i + 1] == "f" or sys.argv[i + 1] == "false":
-                        has_header = False 
-                        i = i+1
-                    else:
-                        print("Error: Invalid arg '" + sys.argv[i+1] + "'")
-                        sys.exit(1)
-                else: 
-                    print("Error: Expected argument with '" + sys.argv[i] + "' option")
-                    sys.exit(1)
-            elif sys.argv[i] == "-n":             
-                if i != len(sys.argv) -1: 
-                    if sys.argv[i + 1].isdigit():
-                        periods_in_average = int(sys.argv[i + 1])
-                        i = i+1 
-                    else:
-                        print("Error: Invalid arg '" + sys.argv[i+1] + "'")
-                        sys.exit(1)
-                else: 
-                    print("Error: Expected argument with '" + sys.argv[i] + "' option")
-                    sys.exit(1)
-            elif sys.argv[i] == "-v": 
-                verbose_output = True
-            elif sys.argv[i] == "-s":             
-                silent = True 
-            else: 
-                print("Error: Invalid arg '" + sys.argv[i] + "'")
-                sys.exit(1)
-            i = i + 1
-
-
-        # discard the header if it has one
-        if has_header: 
-            prices_csv.readline()        
-        price_data = []
-        price_data_idx = 2
-        for line in prices_csv:
-            price_data.append(float(line.split(",")[price_data_idx])) 
-        
-        simulate(price_data, periods_in_average, volatility_buffer, verbose_output=verbose_output)
-    
 
 def simulate(price_data, ema_length=3, price_movement_threshold=.03, starting_capital=450, fee_rate=.005, verbose_output=False, silent=False):
+    if not silent: 
+        print("simulating ema with length " + str(ema_length) + " and price movement threshold " + format(price_movement_threshold, ".2%"))
+
     # compute an sma to start
     sum_for_avg = 0 
     for i in range(ema_length): 
-        if i == 0: 
-            max_purchase_amt = starting_capital / (1 + fee_rate)
-            initial_coin_purchase = max_purchase_amt / price_data[i] 
         try:
             sum_for_avg += price_data[i]
         except IndexError:
@@ -112,12 +28,19 @@ def simulate(price_data, ema_length=3, price_movement_threshold=.03, starting_ca
     coins_owned = 0
     cash_money = starting_capital
     bought = False
+    today_price = None
+    initial_coin_purchase = None
     for today_price in price_data[i+2:]: 
+        if initial_coin_purchase is None: 
+            max_purchase_amt = cash_money / (1 + fee_rate)
+            initial_coin_purchase = max_purchase_amt / today_price
+
+        signal_price = ema * ((1 + price_movement_threshold) if not bought else (1 - price_movement_threshold))
         if verbose_output:
-            print("today: " + format(today_price, "<10.2f")  + "signal price: "  + format(ema * (1 + price_movement_threshold), ".2f"))
+            print("today: " + format(today_price, "<10.2f")  + "signal price: "  + format(signal_price, ".2f"))
 #            print("cash: " + str(cash_money) + "    " + "coins owned: " + str(coins_owned))
 
-        if bought == False and today_price > ema * (1 + price_movement_threshold) : 
+        if bought == False and today_price > signal_price: 
             bought = True   
             max_purchase_amt = cash_money / (1 + fee_rate)
             cash_money = 0
@@ -125,7 +48,7 @@ def simulate(price_data, ema_length=3, price_movement_threshold=.03, starting_ca
             if verbose_output:
                 print("bought " + format(coins_owned, ".5f") + " at " + format(today_price, ".2f"))
 
-        elif bought == True and today_price < ema * (1 - price_movement_threshold): 
+        elif bought == True and today_price < signal_price: 
             bought = False
             cash_money += (coins_owned * today_price) / (1 + fee_rate)
             if verbose_output:
@@ -137,52 +60,16 @@ def simulate(price_data, ema_length=3, price_movement_threshold=.03, starting_ca
  
     if bought: 
         cash_money += (coins_owned * today_price) / (1 + fee_rate)
-
-    if not silent:
-        print("algo: " + format(cash_money - starting_capital, ".2f"))
-        print("market: " + format((initial_coin_purchase * today_price / (1 + fee_rate))- starting_capital, ".2f"))
     
-    return (cash_money - starting_capital) / ((initial_coin_purchase * today_price / (1 + fee_rate))- starting_capital)
+    algo_returns = (cash_money - starting_capital) / starting_capital
+    market_returns = (initial_coin_purchase * today_price / (1 + fee_rate) - starting_capital) / starting_capital
+    
+    if not silent:
+        print("algo: " + format(algo_returns, ".2%"))
+        print("market: " + format(market_returns, ".2%"))
 
-#    print(str(ema_length) + ", " + format(threshold, "5.3f") + "," + format((bank_acct -1_000_000) / (today_price - initial_price), "3.2f"))
-#    print(initial_coin_purchase) 
-
-
-def update_best(a_list, current): 
-    if len(a_list) < 6:
-        a_list.append(current)
-    else:
-        mindx = 0 
-        minimum = a_list[0][2]
-        for i in range(1, len(a_list)):
-            if a_list[i][2] < minimum: 
-                mindx = i
-                minimum = a_list[i][2]
-            
-        if current[2] > minimum: 
-            a_list[mindx] = current
-
-
-def usage(): 
-    print("""USAGE: python sma.py data-file [options]
-OPTIONS: 
-    -d, --days-in-average <num> 
-    \t\tSpecify how many days should be used to compute the moving average. 
-    \t\tProgram uses 5 days if this option is not used.                          
-
-    -h --has-header <t|true|f|false>
-    \t\tSpecify whether or not data-file has a header with. 
-    \t\tProgram assumes true if option is not used.""")
-
-
-def average(lst): 
-    the_sum = 0
-    for i in lst:
-        the_sum += i
-    return the_sum / len(lst)
+    return algo_returns - market_returns
 
 
 if __name__ == "__main__": 
     main()
-
-
