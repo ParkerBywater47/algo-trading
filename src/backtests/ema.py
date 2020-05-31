@@ -1,10 +1,8 @@
-import sys 
-import time
 
 
 def simulate(price_data, ema_length=13, price_movement_threshold=.054, starting_capital=450, fee_rate=.005, verbose_output=False, silent=False):
     if not silent: 
-        print("simulating ema with length " + str(ema_length) + " and price movement threshold " + format(price_movement_threshold, ".2%"))
+        print("simulating ema with length " + str(ema_length) + ", price movement threshold " + format(price_movement_threshold, ".2%") + ", fee rate " + format(fee_rate, ".2%"))
 
     # compute an sma to start
     sum_for_avg = 0 

@@ -4,7 +4,7 @@ import time
 
 def simulate(price_data, sma_length=3, price_movement_threshold=.03, starting_capital=450, fee_rate=.005, verbose_output=False, silent=False):
     if not silent: 
-        print("simulating sma with length " + str(sma_length) + " and price movement threshold " + format(price_movement_threshold, ".2%"))
+        print("simulating sma with length " + str(sma_length) + ", price movement threshold " + format(price_movement_threshold, ".2%") + ", fee rate " + format(fee_rate, ".2%"))
 
     # compute the moving average to start
     prev_days = []

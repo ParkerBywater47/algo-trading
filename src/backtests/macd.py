@@ -4,7 +4,7 @@ import time
 
 def simulate(price_data, short_ema_length=12, long_ema_length=26, signal_ema_length = 9, smoothing_factor=2, starting_capital=450, fee_rate=.005, verbose_output=False, silent=False):
     if not silent: 
-        print(f"simulating macd({short_ema_length}, {long_ema_length}, {signal_ema_length})")
+        print(f"simulating macd({short_ema_length}, {long_ema_length}, {signal_ema_length}) with fee rate " + format(fee_rate, ".2%"))
     short_days = []
     long_days = []
 

@@ -4,7 +4,7 @@ import time
 
 def simulate(price_data, short_sma_length, long_sma_length, starting_capital=450, fee_rate=.005, verbose_output=False, silent=False):
     if not silent: 
-        print("simulating double sma with lengths " + str(short_sma_length) + "," + str(long_sma_length))
+        print("simulating double sma with lengths " + str(short_sma_length) + "," + str(long_sma_length)+ " and fee rate " + format(fee_rate, ".2%"))
 
     # compute the moving averages to start
     prev_periods_short_sma = []
