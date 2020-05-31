@@ -14,9 +14,9 @@ def main():
         has_header = True
         silent = False
         verbose_output = False
-        price_data_idx = 2
+        price_data_idx = 4
         algo = sys.argv[1]
-        fee_rate = .005
+        fee_rate = 0 #.005
         
         i = 2 
         while i < len(sys.argv) - 1:
