@@ -77,7 +77,80 @@ def main():
                     prices_csv.readline()        
                 update_best(best_performers, (i, j, double_sma(prices_csv, i, j, verbose_output, volatility_buffer, price_data_idx=2)))
     print(best_performers)
+
+
+def tune_params_ma():
+    """
+    see usage function
+    """
+    has_header = True
+    prices_csv = None
+    verbose_output = False
+    simulation = True
+
+    # best performer
+    periods_in_average = 5
+    volatility_buffer = .075   
+
+    # second best performer
+#    periods_in_average = 13
+#    volatility_buffer = 0.09   
+
+    # a good performer over the 2020 dataset
+    periods_in_average = 3
+    volatility_buffer = .03
+
+    # try to open the file 
+    if len(sys.argv) < 2:
+        print("Error: no data file given")
+        usage()
+        sys.exit(1)
     
+    i = 2  
+    while i < len(sys.argv): # have to do a while loop here because dumbass python 
+        if sys.argv[i] == "-h":
+            if i != len(sys.argv) -1: 
+                if sys.argv[i + 1] == "f" or sys.argv[i + 1] == "false":
+                    has_header = False 
+                    i = i+1
+                else:
+                    print("Error: Invalid arg '" + sys.argv[i+1] + "'")
+                    sys.exit(1)
+            else: 
+                print("Error: Expected argument with '" + sys.argv[i] + "' option")
+                sys.exit(1)
+        elif sys.argv[i] == "-n":             
+            if i != len(sys.argv) -1: 
+                if sys.argv[i + 1].isdigit():
+                    periods_in_average = int(sys.argv[i + 1])
+                    i = i+1 
+                else:
+                    print("Error: Invalid arg '" + sys.argv[i+1] + "'")
+                    sys.exit(1)
+            else: 
+                print("Error: Expected argument with '" + sys.argv[i] + "' option")
+                sys.exit(1)
+        elif sys.argv[i] == "-v": 
+            verbose_output = True
+        elif sys.argv[i] == "-s":             
+            simulation = True 
+        else: 
+            print("Error: Invalid arg '" + sys.argv[i] + "'")
+            sys.exit(1)
+        i = i + 1
+
+    best_performers = []
+    for i in range(3,50):
+        for j in range(12, 200):
+            if j <= i:
+                continue
+            # discard the header if it has one
+            with open(sys.argv[1]) as prices_csv:
+                if has_header: 
+                    prices_csv.readline()        
+                update_best(best_performers, (i, j, double_sma(prices_csv, i, j, verbose_output, volatility_buffer, price_data_idx=2)))
+    print(best_performers)
+
 
 def double_sma(prices, short_average_length, long_average_length, verbose_output, threshold, price_data_idx):
     # compute the moving averages to start
@@ -136,10 +209,6 @@ def double_sma(prices, short_average_length, long_average_length, verbose_output
     return (cash_money - starting_capital) /((initial_coin_purchase * today_price / (1 + fee_rate))- starting_capital)
 #    print(str(periods_in_average) + ", " + format(threshold, "5.3f") + "," + format((bank_acct -1_000_000) / (today_price - initial_price), "3.2f"))
 #    print(initial_coin_purchase) 
-
-
-def tune_params_ma():
-    pass 
 
 
 def update_best(a_list, current): 

@@ -63,11 +63,11 @@ def main():
             ema.simulate(price_data, fee_rate=fee_rate, verbose_output=verbose_output, silent=silent)
         elif algo == "sma": 
             sma.simulate(price_data, fee_rate=fee_rate, verbose_output=verbose_output, silent=silent)
-#        elif algo == "macd": 
-#            macd.simulate(price_data, verbose_output=verbose_output, silent=silent) 
+        elif algo == "macd": 
+            macd.simulate(price_data, fee_rate=fee_rate, verbose_output=verbose_output, silent=silent) 
         elif algo == "dsma": 
             double_sma.simulate(price_data, 50, 200, verbose_output=verbose_output, silent=silent)
-        elif algo == "foe": # 
+        elif algo == "foe":  
             find_optimal_ema.optimize(price_data, fee_rate=fee_rate, verbose_output=verbose_output, silent=silent)
         else:
             print(f"Error: algorithm '{algo}' not installed")
