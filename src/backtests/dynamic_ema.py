@@ -35,6 +35,8 @@ def simulate(price_data, lookback_length, starting_capital=450, fee_rate=.005, v
     bought = False
     today_price = None
     initial_coin_purchase = None
+    days_since_update = 0
+    update_time = 20 
     for today_price in price_data[i+2:]: 
 #        print(ema_length, price_movement_threshold)
         if initial_coin_purchase is None: 
@@ -44,7 +46,7 @@ def simulate(price_data, lookback_length, starting_capital=450, fee_rate=.005, v
         signal_price = ema * ((1 + price_movement_threshold) if not bought else (1 - price_movement_threshold))
         if verbose_output:
             print("today: " + format(today_price, "<10.2f")  + "signal price: "  + format(signal_price, ".2f"))
-#            print("cash: " + str(cash_money) + "    " + "coins owned: " + str(coins_owned))
+            print("cash: " + str(cash_money) + "    " + "shares owned: " + str(coins_owned))
 
         if bought == False and today_price > signal_price: 
             bought = True   
@@ -63,26 +65,28 @@ def simulate(price_data, lookback_length, starting_capital=450, fee_rate=.005, v
         
         lookback_days.append(today_price)
         lookback_days.pop(0)
-        ema_length, price_movement_threshold, python_needs_this = find_optimal_ema.optimize(lookback_days, fee_rate=fee_rate, verbose_output=False, silent=True)[-1]    
+        if days_since_update == 20: 
+            ema_length, price_movement_threshold, python_needs_this = find_optimal_ema.optimize(lookback_days, fee_rate=fee_rate, verbose_output=False, silent=True)[-1]    
+            days_since_update = 0
+        
         multiplier = smoothing_factor / (ema_length + 1)
 
         # update exponential moving average  
         ema = today_price * multiplier + ema * (1 - multiplier)  
+        days_since_update += 1
  
     if bought: 
         cash_money += (coins_owned * today_price) / (1 + fee_rate)
     
     algo_returns = (cash_money - starting_capital) / starting_capital
     market_returns = (initial_coin_purchase * today_price / (1 + fee_rate) - starting_capital) / starting_capital
-    
+   
     if not silent:
         print("algo: " + format(algo_returns, ".2%"))
         print("market: " + format(market_returns, ".2%"))
 
+    #print(format(algo_returns - market_returns, ".2%") + ", " + ("+" if algo_returns > 0 else "-"))
     return algo_returns - market_returns
 
 
-def get_optimal_params():
-    best_params = find_optimal_ema.optimize(price_data[:lookback_length], fee_rate=fee_rate, verbose_output=False, silent=True)
-    return find_optimal_ema.optimize(price_data[:lookback_length], fee_rate=fee_rate, verbose_output=False, silent=True)[len(best_params) -1]
 

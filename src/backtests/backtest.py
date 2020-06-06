@@ -6,6 +6,7 @@ import macd
 import double_sma
 import find_optimal_ema
 import dynamic_ema
+import find_optimal_dynema
 
 
 def main(): 
@@ -71,7 +72,9 @@ def main():
         elif algo == "foe":  
             find_optimal_ema.optimize(price_data, fee_rate=fee_rate, verbose_output=verbose_output, silent=silent)
         elif algo == "dynema": 
-            dynamic_ema.simulate(price_data, lookback_length=100, fee_rate=fee_rate, verbose_output=verbose_output, silent=silent)
+            dynamic_ema.simulate(price_data, lookback_length=95, fee_rate=fee_rate, verbose_output=verbose_output, silent=silent)
+        elif algo == "fode":  
+            find_optimal_dynema.optimize(price_data, fee_rate=fee_rate, verbose_output=verbose_output, silent=silent)
         else:
             print(f"Error: algorithm '{algo}' not installed")
 
