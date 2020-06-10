@@ -5,6 +5,8 @@ keys/*
 src/api_bs.py
 */__pycache__
 *.pyc
+*.out
+*.exe
 *.pdf
 logs/
 research/
