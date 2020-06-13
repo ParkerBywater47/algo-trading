@@ -36,12 +36,14 @@ def simulate(price_data, lookback_length, starting_capital=450, fee_rate=.005, v
     today_price = None
     initial_coin_purchase = None
     days_since_update = 0
-    update_time = 20 
+    update_time = 9
+    j = i + 2
     for today_price in price_data[i+2:]: 
 #        print(ema_length, price_movement_threshold)
         if initial_coin_purchase is None: 
             max_purchase_amt = cash_money / (1 + fee_rate)
             initial_coin_purchase = max_purchase_amt / today_price
+            print("initial buy of", initial_coin_purchase, "@", today_price, "at", j)
 
         signal_price = ema * ((1 + price_movement_threshold) if not bought else (1 - price_movement_threshold))
         if verbose_output:
@@ -74,6 +76,7 @@ def simulate(price_data, lookback_length, starting_capital=450, fee_rate=.005, v
         # update exponential moving average  
         ema = today_price * multiplier + ema * (1 - multiplier)  
         days_since_update += 1
+        j += 1
  
     if bought: 
         cash_money += (coins_owned * today_price) / (1 + fee_rate)
