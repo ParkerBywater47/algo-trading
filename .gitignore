@@ -1,6 +1,7 @@
 *.txt
 *.swp
 data/*.csv
+long-backtest-data/*.csv
 keys/*
 src/api_bs.py
 */__pycache__
