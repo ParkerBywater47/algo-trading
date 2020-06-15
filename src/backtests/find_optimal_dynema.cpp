@@ -1,8 +1,6 @@
 #include <iostream>
 #include <fstream> 
 #include <string>
-#include <vector>
-#include <list> 
 #include <cstdlib>
 #include <omp.h>
 
@@ -24,9 +22,11 @@ const static int MAX_READJUSTMENT_TIME = 36;
 const static int MIN_READJUSTMENT_TIME = 7;
 const static int MAX_LOOKBACK_LENGTH = 140;
 const static int MIN_LOOKBACK_LENGTH = 60;
+const static int MIN_EMA_LENGTH = 1; 
 const static int MAX_EMA_LENGTH = 50; 
 const static double STARTING_CAPITAL = 450.0; 
 const static double TX_FEE_RATE = 0.0;
+
 
 void find_optimal_dynema(const float price_data[], const int start_day_idx, double* result_table[], const int price_data_size) { 
     # pragma omp parallel 
@@ -40,9 +40,6 @@ void find_optimal_dynema(const float price_data[], const int start_day_idx, doub
 
 
 double simulate_dynamic_ema(const float price_data[], const int start_day_idx, const int readjustment_time, const int lookback_length, const int price_data_size) { 
-
-    // lookback_day_end = start_day_idx - 1; 
-    // lookback_day_begin = start_day_idx - lookback_length ? 
 //    cout << "lookback_length: " << lookback_length << endl; 
     ResultStruct optimal_ema = find_optimal_ema(price_data, start_day_idx - lookback_length, start_day_idx -1, price_data_size); 
     int ema_length = optimal_ema.ema_length;
@@ -124,7 +121,7 @@ double simulate_dynamic_ema(const float price_data[], const int start_day_idx, c
 ResultStruct find_optimal_ema(const float price_data[], const int start_day_idx, const int last_day_idx, const int price_data_size) { 
     ResultStruct best_performer{-1, -1, -100000.0}; 
 //    bool print = true; 
-    for (int ema_length = 3; ema_length <= MAX_EMA_LENGTH; ema_length++) 
+    for (int ema_length = 1; ema_length <= MAX_EMA_LENGTH; ema_length++) 
     { 
         for (int price_movement_threshold = 5; price_movement_threshold <= 100; price_movement_threshold++)
         {
