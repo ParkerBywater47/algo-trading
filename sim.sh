@@ -1,5 +1,5 @@
 data_dir="long-backtest-data/"
-$tickers="COKE HAL KOS MRO RCL SLB UCO USO WFC XOM CSCO CCL GILD"
+#tickers="COKE HAL KOS MRO RCL SLB UCO USO WFC XOM CSCO CCL GILD"
 tickers="HAL"
 hist_suffix="_h.csv"
 sim_suffix="_s.csv"
