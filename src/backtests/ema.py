@@ -1,12 +1,12 @@
 
 
-def simulate(price_data, ema_length=13, price_movement_threshold=.054, starting_capital=450, fee_rate=.005, verbose_output=False, silent=False):
+def simulate(price_data, start_day_idx, ema_length, price_movement_threshold, starting_capital, fee_rate, verbose_output=False, silent=False):
     if not silent: 
         print("simulating ema with length " + str(ema_length) + ", price movement threshold " + format(price_movement_threshold, ".2%") + ", fee rate " + format(fee_rate, ".2%"))
 
     # compute an sma to start
     sum_for_avg = 0 
-    for i in range(ema_length): 
+    for i in range(start_day_idx - ema_length - 1, start_day_idx - 1): 
         try:
             sum_for_avg += price_data[i]
         except IndexError:
@@ -18,20 +18,17 @@ def simulate(price_data, ema_length=13, price_movement_threshold=.054, starting_
     multiplier = smoothing_factor / (ema_length + 1)
     start_day_price = price_data[i + 1]
     ema = start_day_price * multiplier + sma * (1 - multiplier) 
-#    print("initial ema:", ema)
-#    print("multiplier:", multiplier)
-#    print("sma:", sma)
-#    print("start:", start_day_price)
         
     coins_owned = 0
     cash_money = starting_capital
     bought = False
     today_price = None
     initial_coin_purchase = None
-    for today_price in price_data[i+2:]: 
-        if initial_coin_purchase is None: 
-            max_purchase_amt = cash_money / (1 + fee_rate)
-            initial_coin_purchase = max_purchase_amt / today_price
+
+    today_price = price_data[start_day_idx]
+    max_purchase_amt = cash_money / (1 + fee_rate)
+    initial_coin_purchase = max_purchase_amt / today_price
+    for today_price in price_data[start_day_idx:]: # last_day_idx + 1 because Python subtracts 1 from ending index in slices
 
         signal_price = ema * ((1 + price_movement_threshold) if not bought else (1 - price_movement_threshold))
         if verbose_output:

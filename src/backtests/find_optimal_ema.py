@@ -2,7 +2,7 @@ import ema
 import operator
 
 
-def optimize(price_data, fee_rate, verbose_output, silent): 
+def optimize(price_data, start_day_idx, fee_rate, verbose_output, silent): 
     """
     Algorithm to find optimal parameters for ema with price movement threshold
     """
@@ -10,7 +10,7 @@ def optimize(price_data, fee_rate, verbose_output, silent):
     for ema_length in range(1, 50):
         for price_movement_threshold in range(5, 100):
             update_best(best_performers, \
-                (ema_length, price_movement_threshold / 1000, ema.simulate(price_data, ema_length, price_movement_threshold / 1000, fee_rate=fee_rate, verbose_output=verbose_output, silent=True)))
+                (ema_length, price_movement_threshold / 1000, ema.simulate(price_data, start_day_idx,  ema_length, price_movement_threshold / 1000, starting_capital=450,  fee_rate=fee_rate, verbose_output=verbose_output, silent=silent)))
     best_performers = sorted(best_performers, key=operator.itemgetter(2)) 
     if not silent:
         print(best_performers)
