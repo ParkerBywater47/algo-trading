@@ -17,7 +17,6 @@ void find_optimal_dynema(const vector<float> price_data, const int start_day_idx
 double simulate_dynamic_ema(const vector<float> price_data, const int start_day_idx, const int readjustment_time, const int lookback_length, const int price_data_size); 
 ResultStruct find_optimal_ema(const vector<float> price_data, const int start_day_idx, const int last_day_idx, const int price_data_size); 
 double simulate_ema(const vector<float> price_data, const int start_day_idx, const int last_day_idx, const int ema_length, const double price_movement_threshold, const int price_data_size);
-//double simulate_ema(const float price_data[], const int start_day_idx, const int last_day_idx, const int ema_length, const double price_movement_threshold, const int price_data_size, bool print);
 
 const static int MAX_READJUSTMENT_TIME = 36; 
 const static int MIN_READJUSTMENT_TIME = 7;
@@ -42,9 +41,6 @@ double simulate_dynamic_ema(const vector<float> price_data, const int start_day_
     {  
         sum_for_avg += price_data[k];
     }
-//    cout << "in simulate_dynamic_ema() -- (optimal) ema_length: " << ema_length << endl;
-//    cout << "in simulate_dynamic_ema() -- els_added: " << els_added << endl; 
-//    exit(0); 
 
     double sma = sum_for_avg / ema_length; 
     int smoothing_factor = 2; 
@@ -61,24 +57,26 @@ double simulate_dynamic_ema(const vector<float> price_data, const int start_day_
     double today_price = price_data[start_day_idx]; 
     double max_purchase_amt = cash_money / (1 + TX_FEE_RATE); 
     double initial_coin_purchase = max_purchase_amt / today_price;
+    double last_buy_price = 0;
     int days_since_update = 0; 
     for (int i = start_day_idx; i < price_data_size; i++) 
     {
         today_price = price_data[i]; 
         double signal_price = ema * (!bought ? (1 + price_movement_threshold) : (1 -price_movement_threshold));
-        cout << today_price << "\t" << signal_price << endl;
+//        cout << today_price << "\t" << signal_price << endl;
         if (bought == false && today_price > signal_price) { 
             bought = true;   
             max_purchase_amt = cash_money / (1 + TX_FEE_RATE); 
             cash_money = 0;
             coins_owned += max_purchase_amt / today_price; 
-            cout << "bought" << endl;
+            last_buy_price = today_price;
+//            cout << "bought" << endl;
         } 
         else if (bought == true && today_price < signal_price) { 
             bought = false; 
             cash_money += (coins_owned * today_price) / (1 + TX_FEE_RATE); 
+//            cout << "sold" << " " << coins_owned * today_price - last_buy_price * coins_owned << endl;
             coins_owned = 0; 
-            cout << "sold" << endl;
         }
        
         ++days_since_update;
@@ -96,6 +94,7 @@ double simulate_dynamic_ema(const vector<float> price_data, const int start_day_
  
     if (bought) { 
         cash_money += (coins_owned * today_price) / (1 + TX_FEE_RATE) ;
+//        cout << "final sell" << " " << coins_owned * today_price - last_buy_price * coins_owned << endl;
     } 
     
     double algo_returns = (cash_money - STARTING_CAPITAL) / STARTING_CAPITAL;
@@ -206,17 +205,17 @@ double simulate_ema(const vector<float> price_data, const int start_day_idx, con
 
 
 int main(int argc, char* args[]) {
-    int DATA1_LENGTH = 0;
-    int DATA2_LENGTH = 0;
-    if (argc <= 1) {
-        cout << "must enter ticker" << endl;
+    if (argc <= 3) {
+        cout << "must enter historic data file, simulation data file, readjustment time, and lookback length" << endl;
         return 1;    
     }
-    const string ticker(args[1]);
-    const string data_dir = "data/"; 
 
-    ifstream historic_data_file(data_dir + ticker + "_h.csv", fstream::in); 
-    ifstream sim_data_file(data_dir + ticker + "_s.csv", fstream::in);
+    const int readjust_time = stoi(args[3]);
+    const int lookback_length = stoi(args[4]); 
+    int DATA1_LENGTH = 0;
+    int DATA2_LENGTH = 0;
+    ifstream historic_data_file(args[1], fstream::in); 
+    ifstream sim_data_file(args[2], fstream::in);
     
     if (!historic_data_file.is_open() || !sim_data_file.is_open()){ 
         cout << "File open error" << endl;
@@ -234,9 +233,8 @@ int main(int argc, char* args[]) {
     // discard header
     getline(sim_data_file, line); 
     while ( getline(sim_data_file, line) ) { price_data.push_back(stof(line)); ++DATA2_LENGTH; }
-    cout << DATA1_LENGTH << ", " << DATA2_LENGTH << endl;
     
-    simulate_dynamic_ema(price_data, DATA1_LENGTH, 27, 85, DATA1_LENGTH + DATA2_LENGTH );
+    simulate_dynamic_ema(price_data, DATA1_LENGTH, readjust_time, lookback_length, DATA1_LENGTH + DATA2_LENGTH );
 
     historic_data_file.close();
     sim_data_file.close();
