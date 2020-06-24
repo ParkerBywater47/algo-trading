@@ -54,7 +54,7 @@ class DynamicEma(TradeAlgorithm):
 #            today_price = self.__api.get_last_quote(s.trade_symbol)._raw["bidprice"] 
             today_price = self.__api.get_last_trade(s.trade_symbol)._raw["price"]
             self.__do_logging(s.trade_symbol + "\ttoday price: " + format(today_price, ".2f") + "\tsignal price: " + format(signal_price, ".2f") + "\t" + str(s)) 
-            if self.__runs == 1:
+            if self.__runs == 10:
 #            if not s.currently_owned and today_price > signal_price: 
                 # some more api calls 
                 bid_price = self.__api.get_last_quote(s.trade_symbol)._raw["bidprice"] 
@@ -114,7 +114,8 @@ class DynamicEma(TradeAlgorithm):
 
             elif self.__runs == 0:
 #            elif s.currently_owned and today_price < signal_price: 
-                shares_owned = float(self.__api.get_order(s.order_id)["qty"]) 
+#                shares_owned = float(self.__api.get_order(s.order_id)._raw["qty"]) 
+                shares_owned = float(self.__api.get_order("9ddf9f78-e548-419e-97c7-37620d3e2846")._raw["qty"]) 
                 ask_price = self.__api.get_last_quote(s.trade_symbol)._raw["askprice"] 
                 order_resp = self.__api.submit_order(
                                 symbol=s.trade_symbol,
@@ -124,7 +125,7 @@ class DynamicEma(TradeAlgorithm):
                                 qty=str(shares_owned), 
                                 time_in_force='day',
                                 order_class='simple')
-                self.__do_logging("sent order:", json.dumps(dict(
+                self.__do_logging("sent order: " + json.dumps(dict(
                                 symbol=s.trade_symbol,
                                 side='sell',
                                 type='limit',
@@ -132,8 +133,9 @@ class DynamicEma(TradeAlgorithm):
                                 qty=str(shares_owned), 
                                 time_in_force='day',
                                 order_class='simple'), indent=4))
-                self.__do_logging("received response:", json.dumps(order_resp._raw, indent=4, sort_keys=True))
+                self.__do_logging("received response: " + json.dumps(order_resp._raw, indent=4, sort_keys=True))
                 s.order_id = order_resp._raw["id"]
+                order = order_resp._raw
 
                 # check that order was not rejected
                 if order["status"] != "rejected": 
@@ -155,7 +157,8 @@ class DynamicEma(TradeAlgorithm):
                 else:
                     # going to assume that this doesn't happen to start
                     pass
-            
+
+            self.__runs += 1            
             s.lookback_days.append(today_price)
             s.lookback_days.pop(0)
 
