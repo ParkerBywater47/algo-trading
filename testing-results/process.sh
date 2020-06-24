@@ -1,3 +1,5 @@
+cd $1
+
 data=*.txt
 extension=".txt"
 
