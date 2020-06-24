@@ -1,6 +1,6 @@
 *.txt
 *.swp
-data/*.csv
+data/
 long-backtest-data/*.csv
 keys/*
 src/api_bs.py
