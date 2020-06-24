@@ -219,7 +219,7 @@ double simulate_ema(const float price_data[], const int start_day_idx, const int
 
 int main(int argc, char* args[]) {
     const static int DATA1_LENGTH = 252;  
-    const static int DATA2_LENGTH = 1260;  
+    const static int DATA2_LENGTH = 1259;  
 
     if (argc <= 2) {
         cout << "must enter history and simulation data files" << endl;
@@ -228,6 +228,11 @@ int main(int argc, char* args[]) {
 
     ifstream historic_data_file(args[1], fstream::in); 
     ifstream sim_data_file(args[2], fstream::in);
+
+    if (!historic_data_file.is_open() || !sim_data_file.is_open()){ 
+        cout << "File open error" << endl;
+        return 1; 
+    }
 
     // an array to hold all of the price data
     float price_data[DATA1_LENGTH + DATA2_LENGTH]; 
