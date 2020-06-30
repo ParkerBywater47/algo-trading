@@ -1,5 +1,4 @@
-tickers="CCL KOS XOM MRO RCL SLB UCO USO WFC CSCO GILD COKE HAL"
-tickers="HAL"
+tickers="CCL KOS XOM MRO RCL SLB UCO USO WFC CSCO HAL"
 hist_suffix="_h.csv"
 sim_suffix="_s.csv"
 out_dir="../data/dataset1/"

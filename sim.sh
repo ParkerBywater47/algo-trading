@@ -1,5 +1,5 @@
 data_dir="data/dataset1/"
-tickers="CCL KOS XOM MRO RCL SLB UCO USO WFC CSCO GILD COKE HAL"
+tickers="CCL KOS XOM MRO RCL SLB UCO USO WFC CSCO HAL"
 tickers="CCL"
 hist_suffix="_h.csv"
 sim_suffix="_s.csv"
