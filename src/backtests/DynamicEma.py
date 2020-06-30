@@ -7,7 +7,7 @@ from time import strftime, sleep
 
 class DynamicEma(TradeAlgorithm):
     """ 
-    TradeAlgorithm subclass for algorithmically trading my alpaca account with dynamic ema strategy
+    TradeAlgorithm subclass for stocks using dynamic ema strategy and Alpaca 
     """
     def __init__(self, securities, logfile_path): 
         """
@@ -18,26 +18,23 @@ class DynamicEma(TradeAlgorithm):
         self.__log = open(logfile_path, "a")
         self.__fee_rate = 0 
 
-                
-        key_file = open("keys/alpaca.txt")
-        key_id = key_file.readline().strip()
-        secret_key = key_file.readline().strip()
-        key_file.close()
+        self.__api = alpaca_trade_api.REST(api_version="v2")
 
-        self.__api = alpaca_trade_api.REST(key_id, secret_key, api_version='v2')
         self.__ema_smoothing_factor = 2
-
         self.__fill_time_allowed = 1
         self.__runs = 0
 
+        for s in securities:
+            # find the optimal ema strategy for the lookback days 
+            s.ema_length, s.price_movement_threshold, remove_later = find_optimal_ema.optimize(s.lookback_days, len(s.lookback_days) - s.optimal_lookback_length - 1, self.__fee_rate, False, True)[-1]
+            s.ema_multiplier = self.__ema_smoothing_factor / (s.ema_length + 1)
+
+
     def run(self): 
+        if not self.__api.get_clock().is_open: 
+            return
         # Iterate over traded securities 
         for s in self.__securities: 
-            # check for stop loss or take_profit sells if the security was owned
-             
-            # do dynamic_ema 
-            s.ema_length, s.price_movement_threshold, remove_later = find_optimal_ema.optimize(s.lookback_days, len(s.lookback_days) - s.optimal_lookback_length - 1, self.__fee_rate, False, True)[-1]
-
             # This will come out of the live version
             # Compute the ema if it's not already defined
             if s.ema is None: 
@@ -47,23 +44,41 @@ class DynamicEma(TradeAlgorithm):
                 sma = sum_for_avg / s.ema_length
                 s.ema_multiplier = self.__ema_smoothing_factor / (s.ema_length + 1)
                 s.ema = s.lookback_days[len(s.lookback_days) - 1] * s.ema_multiplier + sma * (1 - s.ema_multiplier)
+
+            # check for changes in stoploss and take profit orders
+            if s.stoploss_order_id is not None: 
+                order = self.__api.get_order(s.stoploss_order_id)._raw
+                if order["status"] == "filled":  
+                    s.owned = False
+                    s.tradable_balance += float(order["qty"]) * float(order["filled_avg_price"])
+                order = self.__api.get_order(s.take_profit_order_id)._raw
+                if order["status"] == "filled":  
+                    s.owned = False
+                    s.tradable_balance += float(order["qty"]) * float(order["filled_avg_price"])
                 
             signal_price = s.ema * ((1 + s.price_movement_threshold) if not s.currently_owned else (1 - s.price_movement_threshold))
            
-            # I'll use one of these two numbers as the price for the day 
+            # Get today's price 
 #            today_price = self.__api.get_last_quote(s.trade_symbol)._raw["bidprice"] 
             today_price = self.__api.get_last_trade(s.trade_symbol)._raw["price"]
             self.__do_logging(s.trade_symbol + "\ttoday price: " + format(today_price, ".2f") + "\tsignal price: " + format(signal_price, ".2f") + "\t" + str(s)) 
-            if self.__runs == 10:
+
 #            if not s.currently_owned and today_price > signal_price: 
+#            if self.__runs == 0: 
+            if self.__runs < len(self.__securities):
                 # some more api calls 
-                bid_price = self.__api.get_last_quote(s.trade_symbol)._raw["bidprice"] 
-                purchase_amt = int(s.tradable_balance / bid_price)
+                last_quote = self.__api.get_last_quote(s.trade_symbol)._raw
+                bid_price = last_quote["bidprice"] 
+                bid_size = int(last_quote["bidsize"]) 
+                purchase_amt = int(s.tradable_balance / bid_price) 
+                order_qty = purchase_amt if purchase_amt <= bid_size else bid_size
+                if order_qty <= 0: 
+                    continue 
                 order_resp = self.__api.submit_order(
                                 symbol=s.trade_symbol,
                                 side='buy',
                                 type='market',
-                                qty=purchase_amt, 
+                                qty=order_qty, 
                                 time_in_force='day',
                                 order_class='bracket',
                                 take_profit={ 
@@ -76,7 +91,7 @@ class DynamicEma(TradeAlgorithm):
                                 symbol=s.trade_symbol,
                                 side='buy',
                                 type='market',
-                                qty=purchase_amt, 
+                                qty=order_qty, 
                                 time_in_force='day', 
                                 order_class='bracket',
                                 take_profit={ 
@@ -108,29 +123,33 @@ class DynamicEma(TradeAlgorithm):
                     else:
                         s.currently_owned = True
                         s.tradable_balance -= float(order["qty"]) * float(order["filled_avg_price"])
+                        s.stoploss_order_id = order["legs"][0]["id"] if order["legs"][0]["side"] == "sell" else order["legs"][1]["id"]
+                        s.take_profit_order_id = order["legs"][1]["id"] if order["legs"][0]["side"] == "buy" else order["legs"][0]["id"]
                 else:
                     # going to assume that this doesn't happen to start
                     pass
 
-            elif self.__runs == 0:
 #            elif s.currently_owned and today_price < signal_price: 
-#                shares_owned = float(self.__api.get_order(s.order_id)._raw["qty"]) 
-                shares_owned = float(self.__api.get_order("9ddf9f78-e548-419e-97c7-37620d3e2846")._raw["qty"]) 
-                ask_price = self.__api.get_last_quote(s.trade_symbol)._raw["askprice"] 
+#            elif self.__runs == 1:
+            elif self.__runs > len(self.__securities):
+                last_quote = self.__api.get_last_quote(s.trade_symbol)._raw
+                ask_size = int(last_quote["asksize"])
+                shares_owned = int(self.__api.get_order(s.order_id)._raw["qty"])
+                order_qty = shares_owned if shares_owned <= ask_size else ask_size
+                if order_qty <= 0: 
+                    continue 
                 order_resp = self.__api.submit_order(
                                 symbol=s.trade_symbol,
                                 side='sell',
-                                type='limit',
-                                limit_price=str(ask_price),
-                                qty=str(shares_owned), 
+                                type='market',
+                                qty=order_qty, 
                                 time_in_force='day',
                                 order_class='simple')
                 self.__do_logging("sent order: " + json.dumps(dict(
                                 symbol=s.trade_symbol,
                                 side='sell',
-                                type='limit',
-                                limit_price=ask_price,
-                                qty=str(shares_owned), 
+                                type='market',
+                                qty=order_qty, 
                                 time_in_force='day',
                                 order_class='simple'), indent=4))
                 self.__do_logging("received response: " + json.dumps(order_resp._raw, indent=4, sort_keys=True))
@@ -142,7 +161,7 @@ class DynamicEma(TradeAlgorithm):
                     # Give the order time to fill just in case it doesn't happen instantly
                     order = self.__api.get_order(s.order_id)._raw  
                     fill_time = 0
-                    while int(order["filled_qty"]) != purchase_amt and fill_time <= 30: 
+                    while int(order["filled_qty"]) != shares_owned and fill_time <= 30: 
                         sleep(1)
                         order = self.__api.get_order(s.order_id)._raw
                         fill_time += 1
@@ -154,9 +173,6 @@ class DynamicEma(TradeAlgorithm):
                     else:
                         s.currently_owned = False
                         s.tradable_balance += float(order["qty"]) * float(order["filled_avg_price"])
-                else:
-                    # going to assume that this doesn't happen to start
-                    pass
 
             self.__runs += 1            
             s.lookback_days.append(today_price)
@@ -173,6 +189,7 @@ class DynamicEma(TradeAlgorithm):
     def __do_logging(self, message):
         print(message, strftime('%c'))
         print(message, strftime('%c'), file=self.__log)
+    
 
 class Security:     
     """ 
