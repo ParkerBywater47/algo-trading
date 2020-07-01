@@ -13,10 +13,10 @@ struct ResultStruct {
     double performance_metric;
 }; 
 
-void find_optimal_dynema(const vector<float> price_data, const int start_day_idx, double* result_table[], const int price_data_size); 
-double simulate_dynamic_ema(const vector<float> price_data, const int start_day_idx, const int readjustment_time, const int lookback_length, const int price_data_size); 
-ResultStruct find_optimal_ema(const vector<float> price_data, const int start_day_idx, const int last_day_idx, const int price_data_size); 
-double simulate_ema(const vector<float> price_data, const int start_day_idx, const int last_day_idx, const int ema_length, const double price_movement_threshold, const int price_data_size);
+void find_optimal_dynema(const vector<float>& price_data, const int start_day_idx, double* result_table[], const int price_data_size); 
+double simulate_dynamic_ema(const vector<float>& price_data, const int start_day_idx, const int readjustment_time, const int lookback_length, const int price_data_size); 
+ResultStruct find_optimal_ema(const vector<float>& price_data, const int start_day_idx, const int last_day_idx, const int price_data_size); 
+double simulate_ema(const vector<float>& price_data, const int start_day_idx, const int last_day_idx, const int ema_length, const double price_movement_threshold, const int price_data_size);
 
 const static int MAX_READJUSTMENT_TIME = 36; 
 const static int MIN_READJUSTMENT_TIME = 7;
@@ -28,7 +28,7 @@ const static double STARTING_CAPITAL = 450.0;
 const static double TX_FEE_RATE = 0.0;
 
 
-double simulate_dynamic_ema(const vector<float> price_data, const int start_day_idx, const int readjustment_time, const int lookback_length, const int price_data_size) { 
+double simulate_dynamic_ema(const vector<float>& price_data, const int start_day_idx, const int readjustment_time, const int lookback_length, const int price_data_size) { 
     cout << "simulating dynamic ema with readjust time " << readjustment_time << " and lookback length " << lookback_length << endl;
     ResultStruct optimal_ema = find_optimal_ema(price_data, start_day_idx - lookback_length, start_day_idx - 1, price_data_size); 
     int ema_length = optimal_ema.ema_length;
@@ -107,7 +107,7 @@ double simulate_dynamic_ema(const vector<float> price_data, const int start_day_
 }
 
 
-ResultStruct find_optimal_ema(const vector<float> price_data, const int start_day_idx, const int last_day_idx, const int price_data_size) { 
+ResultStruct find_optimal_ema(const vector<float>& price_data, const int start_day_idx, const int last_day_idx, const int price_data_size) { 
     ResultStruct best_performer{-1, -1, -10000000.0}; 
 //    bool print = true; 
     for (int ema_length = MIN_EMA_LENGTH; ema_length <= MAX_EMA_LENGTH; ema_length++) 
@@ -124,7 +124,7 @@ ResultStruct find_optimal_ema(const vector<float> price_data, const int start_da
 }
 
 
-double simulate_ema(const vector<float> price_data, const int start_day_idx, const int last_day_idx, const int ema_length, const double price_movement_threshold, const int price_data_size) { 
+double simulate_ema(const vector<float>& price_data, const int start_day_idx, const int last_day_idx, const int ema_length, const double price_movement_threshold, const int price_data_size) { 
     // compute an sma to start
     double sum_for_avg = 0;  
     int els_added = 0; 
