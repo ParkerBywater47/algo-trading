@@ -1,7 +1,7 @@
 data_dir = "../../data/"
 results_dir = "../../testing-results/dataset2/"
 
-tickers=["CCL", "KOS", "XOM", "MRO", "RCL", "SLB", "UCO", "USO", "WFC", "CSCO", "GILD", "COKE", "HAL"]
+tickers=["CCL", "KOS", "XOM", "MRO", "RCL", "SLB", "UCO", "USO", "WFC", "CSCO", "HAL"]
 
 for ticker in tickers: 
     pps=[]
