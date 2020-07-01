@@ -29,14 +29,6 @@ class DynamicEma(TradeAlgorithm):
             s.ema_length, s.price_movement_threshold, remove_later = find_optimal_ema.optimize(s.lookback_days, len(s.lookback_days) - s.optimal_lookback_length - 1, self.__fee_rate, False, True)[-1]
             s.ema_multiplier = self.__ema_smoothing_factor / (s.ema_length + 1)
 
-
-    def run(self): 
-        if not self.__api.get_clock().is_open: 
-            return
-        # Iterate over traded securities 
-        for s in self.__securities: 
-            # This will come out of the live version
-            # Compute the ema if it's not already defined
             if s.ema is None: 
                 sum_for_avg = 0
                 for i in range(len(s.lookback_days) - s.ema_length - 1, len(s.lookback_days) - 1):
@@ -44,6 +36,12 @@ class DynamicEma(TradeAlgorithm):
                 sma = sum_for_avg / s.ema_length
                 s.ema_multiplier = self.__ema_smoothing_factor / (s.ema_length + 1)
                 s.ema = s.lookback_days[len(s.lookback_days) - 1] * s.ema_multiplier + sma * (1 - s.ema_multiplier)
+
+    def run(self): 
+        if not self.__api.get_clock().is_open: 
+            return
+        # Iterate over traded securities 
+        for s in self.__securities: 
 
             # check for changes in stoploss and take profit orders
             if s.stoploss_order_id is not None: 
@@ -138,13 +136,17 @@ class DynamicEma(TradeAlgorithm):
                 order_qty = shares_owned if shares_owned <= ask_size else ask_size
                 if order_qty <= 0: 
                     continue 
-                order_resp = self.__api.submit_order(
-                                symbol=s.trade_symbol,
-                                side='sell',
-                                type='market',
-                                qty=order_qty, 
-                                time_in_force='day',
-                                order_class='simple')
+                try:
+                    order_resp = self.__api.submit_order(
+                                    symbol=s.trade_symbol,
+                                    side='sell',
+                                    type='market',
+                                    qty=order_qty, 
+                                    time_in_force='day',
+                                    order_class='simple')
+                except alpaca_trade_api.rest.APIError as e: 
+                    print(e)
+                    continue
                 self.__do_logging("sent order: " + json.dumps(dict(
                                 symbol=s.trade_symbol,
                                 side='sell',
@@ -228,4 +230,4 @@ class Security:
         return self.__readjust_time
 
     def __str__(self): 
-        return self.trade_symbol + ", " + str(self.tradable_balance) + ", " + str(self.ema) + ", " + str(self.ema_length) + ", " + str(self.price_movement_threshold) + ", " + str(self.currently_owned) + ", " + str(self.days_since_readjustment) + ", " + str(self.lookback_days)
+        return self.trade_symbol + ", " + str(self.tradable_balance) + ", " + str(self.ema) + ", " + str(self.ema_length) + ", " + str(self.price_movement_threshold) + ", " + str(self.currently_owned) + ", " + str(self.days_since_readjustment)
