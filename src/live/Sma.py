@@ -2,6 +2,8 @@ import coinbase_api
 from TradeAlgorithm import TradeAlgorithm
 import json 
 from time import strftime
+from functools import reduce
+
 
 
 class Sma(TradeAlgorithm):
@@ -21,7 +23,10 @@ class Sma(TradeAlgorithm):
 
         # trade stuff 
         current_price = coinbase_api.get_price()
-        moving_avg = self.average(self.__previous_periods) 
+        moving_avg = self.average(self.__previous_periods)
+        moving_avg_func = reduce((lambda x,y: x + y), self.__previous_periods) / len(self.__previous_periods)
+        if moving_avg != moving_avg_func: 
+            raise Exception 
        
         # logging stuff 
         signal_price = moving_avg * ((1 - self.__threshold) if self.__bought else (1 + self.__threshold))
@@ -101,3 +106,9 @@ class Sma(TradeAlgorithm):
             if "filled_size" in resp and float(resp["filled_size"]) > 0:
                 return True 
         return False 
+
+    def average(self, lst):         
+        the_sum = 0         
+        for i in lst:             
+            the_sum += i         
+        return the_sum / len(lst)
