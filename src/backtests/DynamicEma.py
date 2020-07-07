@@ -36,6 +36,7 @@ class DynamicEma(TradeAlgorithm):
                 sma = sum_for_avg / s.ema_length
                 s.ema_multiplier = self.__ema_smoothing_factor / (s.ema_length + 1)
                 s.ema = s.lookback_days[len(s.lookback_days) - 1] * s.ema_multiplier + sma * (1 - s.ema_multiplier)
+                s.tradable_balance = s.lookback_days[len(s.lookback_days) - 1] * 1.5
 
     def run(self): 
         if not self.__api.get_clock().is_open: 
@@ -61,9 +62,9 @@ class DynamicEma(TradeAlgorithm):
             today_price = self.__api.get_last_trade(s.trade_symbol)._raw["price"]
             self.__do_logging(s.trade_symbol + "\ttoday price: " + format(today_price, ".2f") + "\tsignal price: " + format(signal_price, ".2f") + "\t" + str(s)) 
 
-#            if not s.currently_owned and today_price > signal_price: 
+            if not s.currently_owned and today_price > signal_price: 
 #            if self.__runs == 0: 
-            if self.__runs < len(self.__securities):
+#            if self.__runs < len(self.__securities):
                 # some more api calls 
                 last_quote = self.__api.get_last_quote(s.trade_symbol)._raw
                 bid_price = last_quote["bidprice"] 
@@ -71,6 +72,7 @@ class DynamicEma(TradeAlgorithm):
                 purchase_amt = int(s.tradable_balance / bid_price) 
                 order_qty = purchase_amt if purchase_amt <= bid_size else bid_size
                 if order_qty <= 0: 
+                    print("continued in buy block")
                     continue 
                 order_resp = self.__api.submit_order(
                                 symbol=s.trade_symbol,
@@ -127,14 +129,15 @@ class DynamicEma(TradeAlgorithm):
                     # going to assume that this doesn't happen to start
                     pass
 
-#            elif s.currently_owned and today_price < signal_price: 
+            elif s.currently_owned and today_price < signal_price: 
 #            elif self.__runs == 1:
-            elif self.__runs > len(self.__securities):
+#            elif self.__runs > len(self.__securities):
                 last_quote = self.__api.get_last_quote(s.trade_symbol)._raw
                 ask_size = int(last_quote["asksize"])
                 shares_owned = int(self.__api.get_order(s.order_id)._raw["qty"])
                 order_qty = shares_owned if shares_owned <= ask_size else ask_size
                 if order_qty <= 0: 
+                    print("continued in sell block")
                     continue 
                 try:
                     order_resp = self.__api.submit_order(

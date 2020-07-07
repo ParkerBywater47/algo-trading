@@ -8,19 +8,24 @@ secret_key = key_file.readline().strip()
 key_file.close()
 
 tickers=["CCL", "KOS", "XOM", "MRO", "RCL", "SLB", "UCO", "USO", "WFC", "CSCO", "HAL"]
-some_balance = 40.123423509
 
 alpaca_api = alpaca_trade_api.REST(key_id, secret_key, api_version='v2')
 
-headers = { 
-            "APCA-API-KEY-ID": key_id, 
-            "APCA-API-SECRET-KEY": secret_key, 
-        }
 
-for ticker in tickers:
-    print(json.dumps(alpaca_api.get_last_quote(ticker)._raw, sort_keys=True, indent=4))
-#print(json.dumps(alpaca_api.get_orders()._raw, sort_keys=True, indent=4))
-bid_price=15.43
+print(json.dumps(alpaca_api.get_last_trade("LMND")._raw, sort_keys=True, indent=4))
+
+
+
+
+#headers = { 
+#            "APCA-API-KEY-ID": key_id, 
+#            "APCA-API-SECRET-KEY": secret_key, 
+#        }
+
+#for ticker in tickers:
+#    print(json.dumps(alpaca_api.get_last_quote(ticker)._raw, sort_keys=True, indent=4))
+##print(json.dumps(alpaca_api.get_orders()._raw, sort_keys=True, indent=4))
+#bid_price=15.43
 
 #order_resp = alpaca_api.submit_order(
 #    symbol="CCL",
@@ -38,7 +43,7 @@ bid_price=15.43
 #print(json.dumps(order_resp._raw, sort_keys=True, indent=4))
 
 
-alpaca_api.cancel_all_orders()
+#alpaca_api.cancel_all_orders()
 
 #resp = alpaca_api.list_positions()
 #resp = alpaca_api.get_account() 
