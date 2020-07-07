@@ -1,6 +1,6 @@
 # Contents
 
-First, a story. I ran [this](../src/backtests/find_optimal_dynema.cpp) on a few different datasets 
+First, a story. I ran [this](../src/backtests/optimize_dynamic_ema.cpp) on a few different datasets 
 to determine what the best parameters for my so-called dynamic EMA strategy. The results of one dataset conflicted with those of the other. To determine which of these should be used in live trading I decided I would simulate the strategy using the optimal parameters for each dataset on the other dataset. I decided to use the best five parameters for each ticker. The aforementioned simulation runs the dynamic EMA strategy on increasingly longer periods of time starting with a year. The following is a collection of scripts to automate doing just that. 
 
 **NOTE: Some of the file paths in these scripts are probably incorrect if run from this directory**
