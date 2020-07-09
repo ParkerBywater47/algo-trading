@@ -18,3 +18,5 @@ the dynamic EMA parameters "against each other".
 * `misc.py` currently just has code that generates links to get historical data from yahoo finance. Yes, 
 `misc.py` isn't a great name but it's literally for miscellaneous scripts that I may or may not use again. 
 
+`basically_sorts.sh` is a script that sorts output from [this](../src/backtests/optimize_dynamic_ema.cpp)  by performance. 
+

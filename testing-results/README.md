@@ -1,6 +1,2 @@
 # Brief explanation of what this directory contains
-* `dataset*` directories hold results for running [this](../src/backtests/optimize_dynamic_ema.cpp) code on the historical data in the `data/dataset*` directory. 
-    
-* `process.sh` is a script that sorts the output data by performance (the first column of the \<ticker\>\_raw.txt file)
-
-
+* `dataset*` directories hold results for running [this](../src/backtests/optimize_dynamic_ema.cpp) code on the historical data in the `data/dataset*` directory. Files named like `\<ticker\>_para_raw.txt` contain output from the previously linked code. The files named like `\<ticker\>.txt` are the output data sorted by performance against the market (the first column of the  `\<ticker\>_para_raw.txt` files). [This](../scripts/basically_sorts.sh) script can be used to do this sorting.
