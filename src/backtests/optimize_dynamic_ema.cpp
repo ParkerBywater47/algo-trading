@@ -29,8 +29,7 @@ const static double TX_FEE_RATE = 0.0;
 
 
 void find_optimal_dynema(const float price_data[], const int start_day_idx, double* result_table[], const int price_data_size) { 
-    # pragma omp parallel 
-    # pragma omp for
+    #pragma omp parallel for
     for (int i = MIN_READJUSTMENT_TIME; i <= MAX_READJUSTMENT_TIME; i++) { 
         for (int j = MIN_LOOKBACK_LENGTH; j <= MAX_LOOKBACK_LENGTH; j++) {
             result_table[i - MIN_READJUSTMENT_TIME][j - MIN_LOOKBACK_LENGTH] = simulate_dynamic_ema(price_data, start_day_idx, i, j, price_data_size);

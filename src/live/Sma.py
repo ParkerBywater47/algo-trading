@@ -23,7 +23,7 @@ class Sma(TradeAlgorithm):
 
         # trade stuff 
         current_price = coinbase_api.get_price()
-        moving_avg_func = reduce((lambda x,y: x + y), self.__previous_periods) / len(self.__previous_periods)
+        moving_avg = reduce((lambda x,y: x + y), self.__previous_periods) / len(self.__previous_periods)
        
         # logging stuff 
         signal_price = moving_avg * ((1 - self.__threshold) if self.__bought else (1 + self.__threshold))

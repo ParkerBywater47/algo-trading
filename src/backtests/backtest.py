@@ -6,7 +6,7 @@ import macd
 import double_sma
 import find_optimal_ema
 import dynamic_ema
-import find_optimal_dynema
+import optimize_dynamic_ema
 
 
 def main(): 

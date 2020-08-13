@@ -18,8 +18,7 @@ class DynamicEma(TradeAlgorithm):
         self.__log = open(logfile_path, "a")
         self.__fee_rate = 0 
 
-        # setup alpaca api
-        with open("keys/alpaca_sandbox.txt", "r") as keys_file:
+        with open("keys/alpaca.txt", "w") as keys_file:
             endpoint = keys_file.readline().strip() 
             key_id = keys_file.readline().strip()
             secret_key = keys_file.readline().strip()
@@ -33,7 +32,6 @@ class DynamicEma(TradeAlgorithm):
             # find the optimal ema strategy for the lookback days 
             s.ema_length, s.price_movement_threshold, remove_later = find_optimal_ema.optimize(s.lookback_days, len(s.lookback_days) - s.optimal_lookback_length - 1, self.__fee_rate, False, True)[-1]
             s.ema_multiplier = self.__ema_smoothing_factor / (s.ema_length + 1)
-            print(s.ema_length)
 
             if s.ema is None: 
                 sum_for_avg = 0
@@ -45,8 +43,8 @@ class DynamicEma(TradeAlgorithm):
                 s.tradable_balance = s.lookback_days[len(s.lookback_days) - 1] * 1.5
 
     def run(self): 
-#        if not self.__api.get_clock().is_open: 
-#            return
+        if not self.__api.get_clock().is_open: 
+            return
         # Iterate over traded securities 
         for s in self.__securities: 
 
@@ -243,4 +241,4 @@ class Security:
         return self.__readjust_time
 
     def __str__(self): 
-        return "(\"" + self.trade_symbol + "\", " + str(self.tradable_balance) + ", " + str(self.ema) + ", " + str(self.currently_owned) +  ", " + str(self.days_since_readjustment) + ", " + str(self.readjust_time) + ", " + str(self.optimal_lookback_length) + ")" #+ ", " + str(self.lookback_days) + ")"
+        return "(" + self.trade_symbol + ", " + str(self.tradable_balance) + ", " + str(self.ema) + ", " + str(self.currently_owned) +  ", " + str(self.days_since_readjustment) + ", " + str(self.readjust_time) + ", " + str(self.optimal_lookback_length) + ", " + str(self.lookback_days) + ")"
