@@ -14,7 +14,7 @@ def optimize(price_data, start_day_idx, fee_rate, verbose_output, silent):
     best_performers = sorted(best_performers, key=operator.itemgetter(2)) 
     if not silent:
         print(best_performers)
-    return best_performers
+    return (best_performers[-1][0], best_performers[-1][1])
 
 
 def update_best(a_list, current): 

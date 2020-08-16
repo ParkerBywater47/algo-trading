@@ -30,7 +30,7 @@ class DynamicEma(TradeAlgorithm):
 
         for s in securities:
             # find the optimal ema strategy for the lookback days 
-            s.ema_length, s.price_movement_threshold, remove_later = find_optimal_ema.optimize(s.lookback_days, len(s.lookback_days) - s.optimal_lookback_length - 1, self.__fee_rate, False, True)[-1]
+            s.ema_length, s.price_movement_threshold = find_optimal_ema.optimize(s.lookback_days, len(s.lookback_days) - s.optimal_lookback_length - 1, self.__fee_rate, False, True)
             s.ema_multiplier = self.__ema_smoothing_factor / (s.ema_length + 1)
 
             if s.ema is None: 
