@@ -18,7 +18,7 @@ class DynamicEma(TradeAlgorithm):
         self.__log = open(logfile_path, "a")
         self.__fee_rate = 0 
 
-        with open("keys/alpaca.txt", "w") as keys_file:
+        with open("keys/alpaca.txt", "r") as keys_file:
             endpoint = keys_file.readline().strip() 
             key_id = keys_file.readline().strip()
             secret_key = keys_file.readline().strip()
@@ -241,4 +241,4 @@ class Security:
         return self.__readjust_time
 
     def __str__(self): 
-        return "(" + self.trade_symbol + ", " + str(self.tradable_balance) + ", " + str(self.ema) + ", " + str(self.currently_owned) +  ", " + str(self.days_since_readjustment) + ", " + str(self.readjust_time) + ", " + str(self.optimal_lookback_length) + ", " + str(self.lookback_days) + ")"
+        return "(\"" + self.trade_symbol + "\", " + str(self.tradable_balance) + ", " + str(self.ema) + ", " + str(self.currently_owned) +  ", " + str(self.days_since_readjustment) + ", " + str(self.readjust_time) + ", " + str(self.optimal_lookback_length) + ") " # + ", " #+ str(self.lookback_days) + ")"

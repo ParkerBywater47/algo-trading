@@ -45,8 +45,8 @@ class DynamicEma(TradeAlgorithm):
                 s.tradable_balance = s.lookback_days[len(s.lookback_days) - 1] * 1.5
 
     def run(self): 
-#        if not self.__api.get_clock().is_open: 
-#            return
+        if not self.__api.get_clock().is_open: 
+            return
         # Iterate over traded securities 
         for s in self.__securities: 
 
