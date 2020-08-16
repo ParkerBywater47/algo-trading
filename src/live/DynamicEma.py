@@ -63,10 +63,11 @@ class DynamicEma(TradeAlgorithm):
            
             # Get today's price 
             today_price = self.__api.get_last_quote(s.trade_symbol)._raw["bidprice"] 
+            log_msg = s.trade_symbol + "\ttoday price: " + format(today_price, ".2f") + "\tsignal price: " + format(signal_price, ".2f") + "\n"
 #            today_price = self.__api.get_last_trade(s.trade_symbol)._raw["price"]
 #            self.__do_logging(s.trade_symbol + "\ttoday price: " + format(today_price, ".2f") + "\tsignal price: " + format(signal_price, ".2f") + "\t")
-            self.__do_logging(s.trade_symbol + "\ttoday price: " + format(today_price, ".2f") + "\tsignal price: " + format(signal_price, ".2f") + "\t" + str(s)) 
-            self.__do_logging(s.trade_symbol + "\ttoday price: " + format(today_price, ".2f") + "\tsignal price: " + format(signal_price, ".2f") + "\t" + str(s), False) 
+#            self.__do_logging(s.trade_symbol + "\ttoday price: " + format(today_price, ".2f") + "\tsignal price: " + format(signal_price, ".2f") + "\t" + str(s)) 
+#            self.__do_logging(s.trade_symbol + "\ttoday price: " + format(today_price, ".2f") + "\tsignal price: " + format(signal_price, ".2f") + "\t" + str(s), False) 
 
             if not s.currently_owned and today_price > signal_price: 
 #            if self.__runs == 0: 
@@ -93,7 +94,7 @@ class DynamicEma(TradeAlgorithm):
                                 stop_loss={
                                     "stop_price": str((1 - .075) * bid_price),
                                 })
-                self.__do_logging("sent order: " + json.dumps(dict( 
+                log_msg += "sent order: " + json.dumps(dict( 
                                 symbol=s.trade_symbol,
                                 side='buy',
                                 type='market',
@@ -105,8 +106,8 @@ class DynamicEma(TradeAlgorithm):
                                 },  
                                 stop_loss={
                                     "stop_price": str((1 - .075) * bid_price),
-                                }), indent=4))
-                self.__do_logging("received response: " + json.dumps(order_resp._raw, indent=4, sort_keys=True))
+                                }), indent=4)
+                log_msg += "received response: " + json.dumps(order_resp._raw, indent=4, sort_keys=True)
                 s.order_id = order_resp._raw["id"]
                 order = order_resp._raw
 
@@ -125,7 +126,7 @@ class DynamicEma(TradeAlgorithm):
                     # check that the order filled
                     if order["filled_avg_price"] is None: 
                         self.__api.cancel_order(s.order_id)
-                        self.__do_logging("Order may not have filled. Sent cancel request. Order details: " + json.dumps(order, sort_keys=True, indent=4))
+                        log_msg += "Order may not have filled. Sent cancel request. Order details: " + json.dumps(order, sort_keys=True, indent=4))
                     else:
                         s.currently_owned = True
                         s.tradable_balance -= float(order["qty"]) * float(order["filled_avg_price"])
@@ -156,14 +157,14 @@ class DynamicEma(TradeAlgorithm):
                 except alpaca_trade_api.rest.APIError as e: 
                     print(e)
                     continue
-                self.__do_logging("sent order: " + json.dumps(dict(
+                log_msg += "sent order: " + json.dumps(dict(
                                 symbol=s.trade_symbol,
                                 side='sell',
                                 type='market',
                                 qty=order_qty, 
                                 time_in_force='day',
                                 order_class='simple'), indent=4))
-                self.__do_logging("received response: " + json.dumps(order_resp._raw, indent=4, sort_keys=True))
+                log_msg += "received response: " + json.dumps(order_resp._raw, indent=4, sort_keys=True))
                 s.order_id = order_resp._raw["id"]
                 order = order_resp._raw
 
@@ -180,7 +181,7 @@ class DynamicEma(TradeAlgorithm):
                     # check that the order filled
                     if order["filled_avg_price"] is None: 
                         self.__api.cancel_order(s.order_id)
-                        self.__do_logging("Order may not have filled. Sent cancel request. Order details: " + json.dumps(order, indent=4, sort_keys=True))
+                        log_msg += "Order may not have filled. Sent cancel request. Order details: " + json.dumps(order, indent=4, sort_keys=True))
                     else:
                         s.currently_owned = False
                         s.tradable_balance += float(order["qty"]) * float(order["filled_avg_price"])
@@ -196,12 +197,11 @@ class DynamicEma(TradeAlgorithm):
 
             # update the ema
             s.ema = today_price * s.ema_multiplier + s.ema * (1 - s.ema_multiplier)            
+            self.__do_logging(log_msg + str(s))
 
-    def __do_logging(self, message, verbose=True):
-        if not verbose:
-            print(message[:message.find("(")], strftime('%c'))
-        else:
-            print(message, strftime('%c'), file=self.__log)
+    def __do_logging(self, message):
+        print(message, strftime('%c'))
+        print(message, strftime('%c'), file=self.__log)
     
 
 class Security:     
