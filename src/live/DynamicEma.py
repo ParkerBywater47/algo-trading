@@ -126,7 +126,7 @@ class DynamicEma(TradeAlgorithm):
                     # check that the order filled
                     if order["filled_avg_price"] is None: 
                         self.__api.cancel_order(s.order_id)
-                        log_msg += "Order may not have filled. Sent cancel request. Order details: " + json.dumps(order, sort_keys=True, indent=4))
+                        log_msg += "Order may not have filled. Sent cancel request. Order details: " + json.dumps(order, sort_keys=True, indent=4)
                     else:
                         s.currently_owned = True
                         s.tradable_balance -= float(order["qty"]) * float(order["filled_avg_price"])
@@ -134,6 +134,7 @@ class DynamicEma(TradeAlgorithm):
                         s.take_profit_order_id = order["legs"][1]["id"] if order["legs"][0]["side"] == "buy" else order["legs"][0]["id"]
                 else:
                     # going to assume that this doesn't happen to start
+                    s.order_id = None
                     pass
 
             elif s.currently_owned and today_price < signal_price: 
@@ -141,7 +142,11 @@ class DynamicEma(TradeAlgorithm):
 #            elif self.__runs > len(self.__securities):
                 last_quote = self.__api.get_last_quote(s.trade_symbol)._raw
                 ask_size = int(last_quote["asksize"])
-                shares_owned = int(self.__api.get_order(s.order_id)._raw["qty"])
+                if s.order_id is None: 
+                    self.__do_logging("s.order_id was none: " + str(s))
+                    continue
+                else
+                    shares_owned = int(self.__api.get_order(s.order_id)._raw["qty"])
                 order_qty = shares_owned if shares_owned <= ask_size else ask_size
                 if order_qty <= 0: 
                     print("continued in sell block")
@@ -163,8 +168,8 @@ class DynamicEma(TradeAlgorithm):
                                 type='market',
                                 qty=order_qty, 
                                 time_in_force='day',
-                                order_class='simple'), indent=4))
-                log_msg += "received response: " + json.dumps(order_resp._raw, indent=4, sort_keys=True))
+                                order_class='simple'), indent=4)
+                log_msg += "received response: " + json.dumps(order_resp._raw, indent=4, sort_keys=True)
                 s.order_id = order_resp._raw["id"]
                 order = order_resp._raw
 
@@ -181,7 +186,7 @@ class DynamicEma(TradeAlgorithm):
                     # check that the order filled
                     if order["filled_avg_price"] is None: 
                         self.__api.cancel_order(s.order_id)
-                        log_msg += "Order may not have filled. Sent cancel request. Order details: " + json.dumps(order, indent=4, sort_keys=True))
+                        log_msg += "Order may not have filled. Sent cancel request. Order details: " + json.dumps(order, indent=4, sort_keys=True)
                     else:
                         s.currently_owned = False
                         s.tradable_balance += float(order["qty"]) * float(order["filled_avg_price"])
@@ -192,7 +197,7 @@ class DynamicEma(TradeAlgorithm):
 
             s.days_since_readjustment += 1
             if s.days_since_readjustment % s.readjust_time == 0: 
-                s.ema_length, s.price_movement_threshold, python_needs_this = find_optimal_ema.optimize(s.lookback_days, len(s.lookback_days) - s.optimal_lookback_length - 1, self.__fee_rate, False, True)[-1]
+                s.ema_length, s.price_movement_threshold = find_optimal_ema.optimize(s.lookback_days, len(s.lookback_days) - s.optimal_lookback_length - 1, self.__fee_rate, False, True)
                 s.ema_multiplier = self.__ema_smoothing_factor / (s.ema_length + 1)
 
             # update the ema
