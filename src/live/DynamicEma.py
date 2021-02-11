@@ -145,7 +145,7 @@ class DynamicEma(TradeAlgorithm):
                 if s.order_id is None: 
                     self.__do_logging("s.order_id was none: " + str(s))
                     continue
-                else
+                else:
                     shares_owned = int(self.__api.get_order(s.order_id)._raw["qty"])
                 order_qty = shares_owned if shares_owned <= ask_size else ask_size
                 if order_qty <= 0: 
