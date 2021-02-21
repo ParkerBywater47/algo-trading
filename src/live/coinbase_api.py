@@ -113,33 +113,36 @@ def get_products():
     return coinbase_GET("/products")
 
 
-def get_historic_rates(start=None, end=None, periods=3, granularity=3600): 
+def get_historic_rates(start=None, end=None, periods=3):  
     """ 
     format of data returned from Coinbase is 
         [[UNIX timestamp, low, high, open, close, volume]...]
-    sorted in descending order by timestamp
+    sorted in descending order by timestamp, that is, more recent data at front of list
     """
     close = 4 # see above docstring
+    an_hour = 3600 # hour in seconds
+    granularity=60 # granularity is size of time slice in seconds 
+
     end = datetime.now() - timedelta(hours=1)
     start = end - timedelta(hours=periods)
-    request_body = {
-        "granularity": granularity , 
-        "start": start.isoformat(), 
-        "end": end.isoformat(),
-    }
-    candles = coinbase_GET("/products/BTC-USDC/candles", request_body=request_body)
+#    request_body = {
+#        "granularity": granularity , 
+#        "start": start.isoformat(), 
+#        "end": end.isoformat(),
+#    }
 
-    # TODO pretending that we always get enough data which isn't guaranteed, but unlikely anyhow
-    if len(candles) > 2: 
-        actual_granularity = candles[0][0] - candles[1][0] # called actual_granularity because coinbase 
-                                                     # doesn't give the requested granularity if 
-                                                     # "enough data is readily available"
+    endpoint = "/products/BTC-USDC/candles"
+    # TODO find out how to get datetime module to handle timezones instead of hardcoding UTC offset
+    params_str = "granularity=" + str(granularity) + "&" \
+               + "end=" + str(end.isoformat()) + "-07:00" + "&" \
+               + "start=" + str(start.isoformat()) + "-07:00" + "&" 
+    url = endpoint + "?" + params_str
+    candles = coinbase_GET(url)
+    out = [candles[x * int(an_hour / granularity)][close] for x in range(0, periods)] 
+    out.reverse() # reverse because other parts of app expect more recent data at higher indices
+    return out
 
-        adj = int(granularity / actual_granularity) 
-        adj_periods = (periods + 1) * adj # * int(granularity / actual_granularity)
-#        old = candles[:adj_periods:adj]
-        out = [candles[x][close] for x in range(adj, (periods + 1) * adj, adj)]
-        return out
+    
            
     
 
