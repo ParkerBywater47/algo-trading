@@ -4,6 +4,7 @@ import json
 from time import strftime
 from functools import reduce
 
+MAX_ORDER_FILL_TRIES = 10
 
 
 class Sma(TradeAlgorithm):
@@ -19,6 +20,7 @@ class Sma(TradeAlgorithm):
 
     def run(self):
         if self.__check_stop_loss(): 
+            self.__stop_loss_id = None
             self.__bought = False
 
         # trade stuff 
@@ -29,7 +31,7 @@ class Sma(TradeAlgorithm):
         signal_price = moving_avg * ((1 - self.__threshold) if self.__bought else (1 + self.__threshold))
         self.__do_logging("current_price: " + format(current_price, ".2f") + "\t signal price: " + format(signal_price, ".2f") + " previous: " + str(self.__previous_periods))
 
-        if self.__bought == False and current_price > moving_avg * (1 + self.__threshold): 
+        if not self.__bought and current_price > moving_avg * (1 + self.__threshold): 
             self.__bought = True   
 
             bid_price = coinbase_api.get_bid() 
@@ -60,15 +62,19 @@ class Sma(TradeAlgorithm):
             self.__do_logging("sent: " + str(buy_order))
             self.__do_logging(json.dumps(coinbase_api.coinbase_POST("/orders", buy_order), sort_keys=True, indent=4))
            
-            self.__do_logging("sent: " + str(stop_loss_order)) 
-            stop_loss_order_resp = coinbase_api.coinbase_POST("/orders", stop_loss_order)
-            self.__do_logging(json.dumps(stop_loss_order_resp, sort_keys=True, indent=4))
+            # keep track of stop loss order id in case algo sells as part of normal operation
+            # inside of loop because, although unlikely, it could possibly take some time to fill 
+            # the order just placed
+            tries = 0
+            stop_loss_order_resp = {}
+            while "id" not in stop_loss_order_resp and tries < MAX_ORDER_FILL_TRIES: 
+                time.sleep(0.5)
+                stop_loss_order_resp = coinbase_api.coinbase_POST("/orders", stop_loss_order)
+                self.__do_logging("sent: " + str(stop_loss_order)) 
+                self.__do_logging(json.dumps(stop_loss_order_resp, sort_keys=True, indent=4))
+            self.__stop_loss_id = stop_loss_order_resp['id'] 
 
-            # keep track of order id of stop loss order so I can cancel it if I sell before
-            if "id" in stop_loss_order_resp: 
-                self.__stop_loss_id = stop_loss_order_resp['id'] 
-
-        elif self.__bought == True and current_price < moving_avg * (1 - self.__threshold): 
+        elif self.__bought and current_price < moving_avg * (1 - self.__threshold): 
             self.__bought = False
             ask_price = coinbase_api.get_ask()
             max_sell_amt = coinbase_api.get_BTC_balance() / (1 + self.__fee_rate) 
@@ -83,8 +89,12 @@ class Sma(TradeAlgorithm):
             self.__do_logging("sold " + format(coins_to_sell, ".5f") + " at " + format(ask_price, ".2f")) 
             # post the sell order
             self.__do_logging(json.dumps(coinbase_api.coinbase_POST("/orders", sell_order), sort_keys=True, indent=4))
+
             # delete the old stop loss order
-            self.__do_logging(json.dumps(coinbase_api.coinbase_DELETE("/orders/" + self.__stop_loss_id), sort_keys=True, indent=4))
+            if self.__stop_loss_id is not None:
+                self.__do_logging(json.dumps(coinbase_api.coinbase_DELETE("/orders/" + self.__stop_loss_id), sort_keys=True, indent=4))
+            else:
+                self.__do_logging("[INFO] Encountered stop_loss_id == None ==> stop loss order for most recent buy was never placed")
       
 
         # update previous periods
